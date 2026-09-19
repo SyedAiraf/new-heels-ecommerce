@@ -234,20 +234,19 @@
         link: "/category/female?sub=shoes-sandals",
         uniqueId: 'women-shoes'
     }) %>
-<!-- Floating Promo Banner (Popup at top) -->
+
+<!-- Floating Premium Promo Bar -->
 <% if (promoBanner && promoBanner.enabled) { %>
 <div class="promo-popup" id="promoPopup">
+    <button class="promo-popup-close" onclick="closePromo()" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+    </button>
     <div class="promo-popup-content">
-        <button class="promo-popup-close" onclick="closePromo()">
-            <i class="bi bi-x-lg"></i>
-        </button>
-        <div class="promo-popup-text">
-            <h3><%= promoBanner.title %></h3>
-            <p><%= promoBanner.subtitle %></p>
-        </div>
-        <div class="promo-popup-cta">
-            <a href="/category/female" class="promo-popup-btn">Shop Now</a>
-        </div>
+        <span class="promo-popup-icon">✦</span>
+        <span class="promo-popup-text"><%= promoBanner.title %></span>
+        <span class="promo-popup-divider">—</span>
+        <span class="promo-popup-subtext"><%= promoBanner.subtitle %></span>
+        <span class="promo-popup-icon">✦</span>
     </div>
 </div>
 <% } %>

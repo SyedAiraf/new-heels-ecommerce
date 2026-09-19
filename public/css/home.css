@@ -512,21 +512,38 @@
     .trust-badge i { font-size: 30px; }
     .trust-badge h5 { font-size: 12px; }
     .trust-badge p { font-size: 11px; }
-}
-/* ============ FLOATING PROMO POPUP ============ */
+}/* ============ PREMIUM FLOATING PROMO BAR ============ */
 .promo-popup {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 9998;
-    background: linear-gradient(135deg, #3F3040 0%, #8B6688 100%);
+    background: #2d0a1e;
     color: white;
-    padding: 20px 0;
-    box-shadow: 0 8px 30px rgba(63, 48, 64, 0.3);
-    transform: translateY(0);
-    transition: transform 0.4s ease-out;
+    padding: 14px 60px 14px 20px;
+    box-shadow: 0 4px 20px rgba(63, 48, 64, 0.35);
     animation: slideDown 0.6s ease-out;
+    border-bottom: 1px solid rgba(201, 164, 92, 0.3);
+    overflow: hidden;
+}
+
+/* Gold shimmer effect */
+.promo-popup::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201, 164, 92, 0.15), transparent);
+    animation: shimmer 4s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
 }
 
 @keyframes slideDown {
@@ -544,120 +561,111 @@
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
+    transition: transform 0.4s ease-out, opacity 0.4s;
 }
 
 .promo-popup-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 60px 0 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
+    gap: 15px;
     flex-wrap: wrap;
     position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.promo-popup-icon {
+    color: #C9A45C;
+    font-size: 12px;
+    opacity: 0.8;
+    letter-spacing: 2px;
 }
 
 .promo-popup-text {
-    text-align: center;
-    flex: 1;
-    min-width: 250px;
-}
-
-.promo-popup-text h3 {
-    font-weight: 700;
-    margin: 0 0 8px;
-    letter-spacing: 3px;
     color: #C9A45C;
-    font-size: 20px;
-    text-transform: uppercase;
-}
-
-.promo-popup-text p {
-    margin: 0;
-    font-size: 14px;
-    letter-spacing: 1px;
-    opacity: 0.95;
-}
-
-.promo-popup-cta {
-    flex-shrink: 0;
-}
-
-.promo-popup-btn {
-    background: #C9A45C;
-    color: white;
-    padding: 12px 30px;
-    text-decoration: none;
+    font-size: 13px;
     font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    display: inline-block;
-    transition: all 0.3s;
-    border: 1px solid #C9A45C;
+    font-family: 'Playfair Display', Georgia, serif;
 }
 
-.promo-popup-btn:hover {
-    background: transparent;
-    color: #C9A45C;
-    transform: translateY(-2px);
+.promo-popup-divider {
+    color: rgba(201, 164, 92, 0.5);
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.promo-popup-subtext {
+    color: #F8F3EF;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    opacity: 0.9;
+    text-transform: uppercase;
 }
 
 .promo-popup-close {
     position: absolute;
-    right: 0;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    width: 36px;
-    height: 36px;
+    background: transparent;
+    border: 1px solid rgba(201, 164, 92, 0.4);
+    color: #C9A45C;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 10px;
     transition: all 0.3s;
+    z-index: 2;
 }
 
 .promo-popup-close:hover {
     background: #C9A45C;
     border-color: #C9A45C;
+    color: #2d0a1e;
     transform: translateY(-50%) rotate(90deg);
 }
 
 @media (max-width: 768px) {
     .promo-popup {
-        padding: 15px 0;
+        padding: 10px 45px 10px 15px;
     }
     
     .promo-popup-content {
+        gap: 8px;
         flex-direction: column;
-        gap: 15px;
-        padding: 0 50px 0 15px;
+        gap: 4px;
     }
     
-    .promo-popup-text h3 {
-        font-size: 15px;
+    .promo-popup-icon {
+        display: none;
+    }
+    
+    .promo-popup-divider {
+        display: none;
+    }
+    
+    .promo-popup-text {
+        font-size: 11px;
         letter-spacing: 2px;
     }
     
-    .promo-popup-text p {
-        font-size: 12px;
-    }
-    
-    .promo-popup-btn {
-        padding: 10px 22px;
-        font-size: 11px;
+    .promo-popup-subtext {
+        font-size: 10px;
+        letter-spacing: 1px;
     }
     
     .promo-popup-close {
-        width: 30px;
-        height: 30px;
-        font-size: 12px;
-        right: 10px;
+        width: 22px;
+        height: 22px;
+        font-size: 9px;
+        right: 12px;
     }
 }
