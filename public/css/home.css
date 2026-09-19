@@ -512,160 +512,268 @@
     .trust-badge i { font-size: 30px; }
     .trust-badge h5 { font-size: 12px; }
     .trust-badge p { font-size: 11px; }
-}/* ============ PREMIUM FLOATING PROMO BAR ============ */
-.promo-popup {
+}
+
+/* ============ PREMIUM CENTERED PROMO MODAL ============ */
+.promo-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9998;
-    background: #2d0a1e;
-    color: white;
-    padding: 14px 60px 14px 20px;
-    box-shadow: 0 4px 20px rgba(63, 48, 64, 0.35);
-    animation: slideDown 0.6s ease-out;
-    border-bottom: 1px solid rgba(201, 164, 92, 0.3);
-    overflow: hidden;
-}
-
-/* Gold shimmer effect */
-.promo-popup::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(201, 164, 92, 0.15), transparent);
-    animation: shimmer 4s infinite;
-}
-
-@keyframes shimmer {
-    0% { left: -100%; }
-    50% { left: 100%; }
-    100% { left: 100%; }
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.promo-popup.hidden {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.4s ease-out, opacity 0.4s;
-}
-
-.promo-popup-content {
+    bottom: 0;
+    background: rgba(63, 48, 64, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+    padding: 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.promo-modal-overlay.hidden {
+    display: none;
+}
+
+.promo-modal {
+    background: #F8F3EF;
+    max-width: 520px;
+    width: 100%;
+    padding: 50px 45px 40px;
     position: relative;
-    z-index: 1;
+    border: 1px solid #C9A45C;
+    box-shadow: 
+        0 30px 80px rgba(63, 48, 64, 0.5),
+        0 0 0 1px rgba(201, 164, 92, 0.3),
+        inset 0 0 60px rgba(139, 102, 136, 0.05);
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: center;
 }
 
-.promo-popup-icon {
-    color: #C9A45C;
-    font-size: 12px;
-    opacity: 0.8;
-    letter-spacing: 2px;
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
-.promo-popup-text {
-    color: #C9A45C;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-family: 'Playfair Display', Georgia, serif;
-}
-
-.promo-popup-divider {
-    color: rgba(201, 164, 92, 0.5);
-    font-size: 12px;
-    font-weight: 300;
-}
-
-.promo-popup-subtext {
-    color: #F8F3EF;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 1.5px;
-    opacity: 0.9;
-    text-transform: uppercase;
-}
-
-.promo-popup-close {
+/* Corner ornaments */
+.promo-modal::before,
+.promo-modal::after {
+    content: '';
     position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border: 1px solid #C9A45C;
+}
+
+.promo-modal::before {
+    top: 10px;
+    left: 10px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.promo-modal::after {
+    bottom: 10px;
+    right: 10px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Close button */
+.promo-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
     background: transparent;
-    border: 1px solid rgba(201, 164, 92, 0.4);
-    color: #C9A45C;
-    width: 26px;
-    height: 26px;
+    border: 1px solid rgba(139, 102, 136, 0.4);
+    color: #8B6688;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     transition: all 0.3s;
     z-index: 2;
 }
 
-.promo-popup-close:hover {
-    background: #C9A45C;
-    border-color: #C9A45C;
-    color: #2d0a1e;
-    transform: translateY(-50%) rotate(90deg);
+.promo-modal-close:hover {
+    background: #8B6688;
+    color: #F8F3EF;
+    border-color: #8B6688;
+    transform: rotate(90deg);
 }
 
+/* Top ornament dots */
+.promo-modal-top-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    color: #C9A45C;
+    font-size: 10px;
+    letter-spacing: 8px;
+}
+
+.promo-modal-top-ornament span:nth-child(2) {
+    font-size: 14px;
+    opacity: 1;
+}
+
+.promo-modal-top-ornament span:nth-child(1),
+.promo-modal-top-ornament span:nth-child(3) {
+    opacity: 0.5;
+}
+
+/* Brand name */
+.promo-modal-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #8B6688;
+    margin-bottom: 25px;
+}
+
+/* Gold divider */
+.promo-modal-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #C9A45C, transparent);
+    margin: 0 auto 25px;
+    position: relative;
+}
+
+.promo-modal-divider::before,
+.promo-modal-divider::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #C9A45C;
+    font-size: 6px;
+}
+
+.promo-modal-divider::before {
+    left: -12px;
+}
+
+.promo-modal-divider::after {
+    right: -12px;
+}
+
+/* Content */
+.promo-modal-content {
+    margin-bottom: 25px;
+}
+
+.promo-modal-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #3F3040;
+    letter-spacing: 2px;
+    line-height: 1.3;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.promo-modal-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #8B6688;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* CTA Button */
+.promo-modal-btn {
+    display: inline-block;
+    background: #8B6688;
+    color: #F8F3EF;
+    padding: 14px 45px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid #8B6688;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.promo-modal-btn:hover {
+    background: #3F3040;
+    color: #F8F3EF;
+    border-color: #3F3040;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(139, 102, 136, 0.25);
+}
+
+/* Tagline at bottom */
+.promo-modal-tagline {
+    color: #C9A45C;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .promo-popup {
-        padding: 10px 45px 10px 15px;
+    .promo-modal-overlay {
+        padding: 15px;
     }
     
-    .promo-popup-content {
-        gap: 8px;
-        flex-direction: column;
-        gap: 4px;
+    .promo-modal {
+        padding: 40px 25px 30px;
     }
     
-    .promo-popup-icon {
-        display: none;
+    .promo-modal-title {
+        font-size: 22px;
+        letter-spacing: 1px;
     }
     
-    .promo-popup-divider {
-        display: none;
+    .promo-modal-subtitle {
+        font-size: 11px;
     }
     
-    .promo-popup-text {
+    .promo-modal-brand {
+        font-size: 13px;
+        letter-spacing: 4px;
+    }
+    
+    .promo-modal-btn {
+        padding: 12px 35px;
         font-size: 11px;
         letter-spacing: 2px;
     }
     
-    .promo-popup-subtext {
-        font-size: 10px;
-        letter-spacing: 1px;
-    }
-    
-    .promo-popup-close {
-        width: 22px;
-        height: 22px;
-        font-size: 9px;
+    .promo-modal-close {
+        width: 28px;
+        height: 28px;
+        top: 12px;
         right: 12px;
     }
 }
