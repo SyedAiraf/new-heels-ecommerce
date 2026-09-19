@@ -60,7 +60,6 @@ function initHeroSlider() {
         startInterval();
     }
     
-    // Touch swipe
     let touchStartX = 0;
     const slider = document.querySelector('.hero-slider');
     if (slider) {
@@ -83,7 +82,7 @@ function initHeroSlider() {
     startInterval();
 }
 
-// ============ HORIZONTAL PRODUCT SLIDERS ============
+// ============ AUTO-SLIDING PRODUCT SLIDERS ============
 function initProductSliders() {
     const wrappers = document.querySelectorAll('.products-slider-wrapper');
     
@@ -95,20 +94,76 @@ function initProductSliders() {
         if (!slider) return;
         
         const scrollAmount = 300;
+        let autoSlideTimer;
+        let userInteracting = false;
         
+        // Manual scroll function
+        function scrollLeft() {
+            slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+        
+        function scrollRight() {
+            // Check if we're at the end
+            const atEnd = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10;
+            
+            if (atEnd) {
+                // Reset to start
+                slider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+        
+        // Arrow button handlers
         if (leftBtn) {
             leftBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                scrollLeft();
+                resetAutoSlide();
             });
         }
         
         if (rightBtn) {
             rightBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                scrollRight();
+                resetAutoSlide();
             });
         }
+        
+        // Auto-slide every 3 seconds
+        function startAutoSlide() {
+            autoSlideTimer = setInterval(() => {
+                if (!userInteracting) {
+                    scrollRight();
+                }
+            }, 3000);
+        }
+        
+        function resetAutoSlide() {
+            clearInterval(autoSlideTimer);
+            startAutoSlide();
+        }
+        
+        // Pause on user interaction
+        slider.addEventListener('mouseenter', () => {
+            userInteracting = true;
+        });
+        
+        slider.addEventListener('mouseleave', () => {
+            userInteracting = false;
+        });
+        
+        slider.addEventListener('touchstart', () => {
+            userInteracting = true;
+        });
+        
+        slider.addEventListener('touchend', () => {
+            setTimeout(() => { userInteracting = false; }, 3000);
+        });
+        
+        // Start auto-slide
+        startAutoSlide();
     });
 }
 

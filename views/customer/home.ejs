@@ -66,6 +66,7 @@
             <a href="/category/female">WOMEN</a>
             <a href="/category/female?sub=shoes-sandals">SALE</a>
             <a href="/category/female?sub=bags-purses">NEW ARRIVALS</a>
+
             <a href="/track-order">TRACK ORDER</a>
         </div>
     </div>
@@ -170,71 +171,72 @@
         </div>
     </div>
 
-    <!-- Include the subcategory section partials -->
-    <%- include('partials/subcat-section', { 
-        title: "MEN'S SHOES", 
-        subtitle: "Formal & casual", 
-        products: menShoes, 
-        link: "/category/men?sub=shoes",
-        uniqueId: 'men-shoes'
-    }) %>
+    <!-- WOMEN'S FIRST -->
+<%- include('partials/subcat-section', { 
+    title: "WOMEN'S BAGS & PURSES", 
+    subtitle: "Elegant & timeless", 
+    products: womenBags, 
+    link: "/category/female?sub=bags-purses",
+    uniqueId: 'women-bags'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "MEN'S CHAPPALS", 
-        subtitle: "Traditional comfort", 
-        products: menChappals, 
-        link: "/category/men?sub=chappals",
-        uniqueId: 'men-chappals'
-    }) %>
+<%- include('partials/subcat-section', { 
+    title: "WOMEN'S SHOES & SANDALS", 
+    subtitle: "Step into luxury", 
+    products: womenShoes, 
+    link: "/category/female?sub=shoes-sandals",
+    uniqueId: 'women-shoes'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "PESHAWRI CHAPPALS", 
-        subtitle: "Heritage craftsmanship", 
-        products: menPeshawri, 
-        link: "/category/men?sub=peshawri",
-        uniqueId: 'men-peshawri'
-    }) %>
+<!-- MEN'S SECOND -->
+<%- include('partials/subcat-section', { 
+    title: "MEN'S SHOES", 
+    subtitle: "Formal & casual", 
+    products: menShoes, 
+    link: "/category/men?sub=shoes",
+    uniqueId: 'men-shoes'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "KIDS' TODDLER (1-4 YRS)", 
-        subtitle: "First steps in style", 
-        products: kidsToddler, 
-        link: "/category/kids?sub=toddler",
-        uniqueId: 'kids-toddler'
-    }) %>
+<%- include('partials/subcat-section', { 
+    title: "MEN'S CHAPPALS", 
+    subtitle: "Traditional comfort", 
+    products: menChappals, 
+    link: "/category/men?sub=chappals",
+    uniqueId: 'men-chappals'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "LITTLE KIDS (4-8 YRS)", 
-        subtitle: "Playful & comfortable", 
-        products: kidsLittle, 
-        link: "/category/kids?sub=little-kids",
-        uniqueId: 'kids-little'
-    }) %>
+<%- include('partials/subcat-section', { 
+    title: "PESHAWRI CHAPPALS", 
+    subtitle: "Heritage craftsmanship", 
+    products: menPeshawri, 
+    link: "/category/men?sub=peshawri",
+    uniqueId: 'men-peshawri'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "BIG KIDS (8-12 YRS)", 
-        subtitle: "Growing in style", 
-        products: kidsBig, 
-        link: "/category/kids?sub=big-kids",
-        uniqueId: 'kids-big'
-    }) %>
+<!-- KIDS' THIRD -->
+<%- include('partials/subcat-section', { 
+    title: "KIDS' TODDLER (1-4 YRS)", 
+    subtitle: "First steps in style", 
+    products: kidsToddler, 
+    link: "/category/kids?sub=toddler",
+    uniqueId: 'kids-toddler'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "WOMEN'S BAGS & PURSES", 
-        subtitle: "Elegant & timeless", 
-        products: womenBags, 
-        link: "/category/female?sub=bags-purses",
-        uniqueId: 'women-bags'
-    }) %>
+<%- include('partials/subcat-section', { 
+    title: "LITTLE KIDS (5-8 YRS)", 
+    subtitle: "Playful & comfortable", 
+    products: kidsLittle, 
+    link: "/category/kids?sub=little-kids",
+    uniqueId: 'kids-little'
+}) %>
 
-    <%- include('partials/subcat-section', { 
-        title: "WOMEN'S SHOES & SANDALS", 
-        subtitle: "Step into luxury", 
-        products: womenShoes, 
-        link: "/category/female?sub=shoes-sandals",
-        uniqueId: 'women-shoes'
-    }) %>
-
+<%- include('partials/subcat-section', { 
+    title: "BIG KIDS (9-12 YRS)", 
+    subtitle: "Growing in style", 
+    products: kidsBig, 
+    link: "/category/kids?sub=big-kids",
+    uniqueId: 'kids-big'
+}) %>
 <!-- Premium Centered Promo Modal -->
 <% if (promoBanner && promoBanner.enabled) { %>
 <div class="promo-modal-overlay" id="promoModal">
@@ -325,12 +327,15 @@
 
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-nav">
-        <a href="/" class="active"><i class="bi bi-house"></i> Home</a>
-        <a href="/category/men"><i class="bi bi-person"></i> Men</a>
-        <a href="/category/kids"><i class="bi bi-emoji-smile"></i> Kids</a>
-        <a href="/category/female"><i class="bi bi-heart"></i> Women</a>
-        <a href="/cart"><i class="bi bi-cart"></i> Cart</a>
-    </div>
+    <a href="/" class="active"><i class="bi bi-house"></i> Home</a>
+    <a href="/category/female"><i class="bi bi-heart"></i> Women</a>
+    <a href="/category/men"><i class="bi bi-person"></i> Men</a>
+    <a href="/category/kids"><i class="bi bi-emoji-smile"></i> Kids</a>
+    <a href="/cart" style="position: relative;">
+        <i class="bi bi-cart"></i> Cart
+        <span class="mobile-cart-badge"><%= typeof cartCount !== 'undefined' ? cartCount : 0 %></span>
+    </a>
+</div>
 
     <!-- WhatsApp Button -->
     <a href="https://wa.me/923277985292?text=Hello%20New%20Heels" class="whatsapp-btn" target="_blank">

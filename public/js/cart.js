@@ -1,71 +1,8 @@
-// Update quantity (for cart page)
-function updateQuantity(productId, size, color, newQuantity) {
-    if (newQuantity < 1) {
-        removeItem(productId, size, color);
-        return;
-    }
-    
-    fetch('/cart/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId, size, color, quantity: newQuantity })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();
-        }
-    })
-    .catch(err => console.error(err));
-}
-
-// Remove item
-function removeItem(productId, size, color) {
-    if (!confirm('Remove this item from cart?')) return;
-    
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '/cart/remove';
-    
-    const fields = { productId, size, color };
-    for (const key in fields) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = fields[key];
-        form.appendChild(input);
-    }
-    
-    document.body.appendChild(form);
-    form.submit();
-}
-
-// Change quantity in product detail page
-function changeQty(amount) {
-    const input = document.getElementById('quantity');
-    if (!input) return;
-    let val = parseInt(input.value) + amount;
-    if (val < 1) val = 1;
-    input.value = val;
-}
-
-// Select size
-let selectedSize = '';
-let selectedColor = '';
-
-function selectSize(btn) {
-    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedSize = btn.textContent.trim();
-}
-
 // ============ PREMIUM CART NOTIFICATION ============
 function showCartNotification(cartCount) {
-    // Remove any existing notification
     const existing = document.querySelector('.cart-notification-overlay');
     if (existing) existing.remove();
     
-    // Create overlay
     const overlay = document.createElement('div');
     overlay.className = 'cart-notification-overlay';
     overlay.innerHTML = `
@@ -90,19 +27,13 @@ function showCartNotification(cartCount) {
     `;
     
     document.body.appendChild(overlay);
-    
-    // Animate in
     setTimeout(() => overlay.classList.add('show'), 10);
     
-    // Update cart badges
     document.querySelectorAll('.header-icon .badge, .mobile-cart-badge').forEach(badge => {
         badge.textContent = cartCount;
     });
     
-    // Auto-close after 5 seconds
-    setTimeout(() => {
-        closeCartNotification();
-    }, 5000);
+    setTimeout(() => closeCartNotification(), 5000);
 }
 
 function closeCartNotification() {
@@ -111,6 +42,110 @@ function closeCartNotification() {
         overlay.classList.remove('show');
         setTimeout(() => overlay.remove(), 400);
     }
+}
+
+// ============ PREMIUM REMOVE CONFIRMATION ============
+function showRemoveConfirmation(productId, size, color, itemName) {
+    const existing = document.querySelector('.remove-confirm-overlay');
+    if (existing) existing.remove();
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'remove-confirm-overlay';
+    overlay.innerHTML = `
+        <div class="remove-confirm-box">
+            <div class="remove-confirm-icon">
+                <i class="bi bi-trash"></i>
+            </div>
+            <h4 class="remove-confirm-title">Remove Item?</h4>
+            <p class="remove-confirm-text">Are you sure you want to remove <strong>${itemName}</strong> from your cart?</p>
+            <div class="remove-confirm-actions">
+                <button class="remove-confirm-btn remove-confirm-cancel" onclick="closeRemoveConfirm()">
+                    Cancel
+                </button>
+                <button class="remove-confirm-btn remove-confirm-delete" onclick="confirmRemove('${productId}', '${size}', '${color}')">
+                    Remove
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add('show'), 10);
+}
+
+function closeRemoveConfirm() {
+    const overlay = document.querySelector('.remove-confirm-overlay');
+    if (overlay) {
+        overlay.classList.remove('show');
+        setTimeout(() => overlay.remove(), 300);
+    }
+}
+
+function confirmRemove(productId, size, color) {
+    closeRemoveConfirm();
+    
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/cart/remove';
+    
+    const fields = { productId, size, color };
+    for (const key in fields) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        form.appendChild(input);
+    }
+    
+    document.body.appendChild(form);
+    form.submit();
+}
+
+// Update quantity (for cart page)
+function updateQuantity(productId, size, color, newQuantity) {
+    if (newQuantity < 1) {
+        const nameEl = document.querySelector(`[data-item-name="${productId}-${size}-${color}"]`);
+        const itemName = nameEl ? nameEl.textContent : 'this item';
+        showRemoveConfirmation(productId, size, color, itemName);
+        return;
+    }
+    
+    fetch('/cart/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, size, color, quantity: newQuantity })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) location.reload();
+    })
+    .catch(err => console.error(err));
+}
+
+// Remove item button (called from cart page)
+function removeItem(productId, size, color) {
+    const nameEl = document.querySelector(`[data-item-name="${productId}-${size}-${color}"]`);
+    const itemName = nameEl ? nameEl.textContent : 'this item';
+    showRemoveConfirmation(productId, size, color, itemName);
+}
+
+// Change quantity in product detail page
+function changeQty(amount) {
+    const input = document.getElementById('quantity');
+    if (!input) return;
+    let val = parseInt(input.value) + amount;
+    if (val < 1) val = 1;
+    input.value = val;
+}
+
+// Select size
+let selectedSize = '';
+let selectedColor = '';
+
+function selectSize(btn) {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedSize = btn.textContent.trim();
 }
 
 // ============ ADD TO CART ============
@@ -146,16 +181,19 @@ function addToCart(productId, productType) {
     });
 }
 
-// Close notification on overlay click
+// Close on overlay click / Escape
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('cart-notification-overlay')) {
         closeCartNotification();
     }
+    if (e.target.classList.contains('remove-confirm-overlay')) {
+        closeRemoveConfirm();
+    }
 });
 
-// Close on Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeCartNotification();
+        closeRemoveConfirm();
     }
 });
