@@ -1,0 +1,66 @@
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <img src="/images/logo.jpg" alt="New Heels" style="height: 70px; width: auto; margin-bottom: 12px;">
+        <small>ADMIN PANEL</small>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li>
+            <a href="/admin/dashboard" class="<%= activePage === 'dashboard' ? 'active' : '' %>">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="/admin/products" class="<%= activePage === 'products' ? 'active' : '' %>">
+                <i class="bi bi-box-seam"></i>
+                Products
+            </a>
+        </li>
+        <li>
+            <a href="/admin/banners" class="<%= activePage === 'banners' ? 'active' : '' %>">
+                <i class="bi bi-images"></i>
+                Banners
+            </a>
+        </li>
+        <li>
+            <a href="/admin/orders" class="<%= activePage === 'orders' ? 'active' : '' %>">
+                <i class="bi bi-cart3"></i>
+                Orders
+            </a>
+        </li>
+        <li>
+    <a href="/admin/reviews" class="<%= activePage === 'reviews' ? 'active' : '' %>">
+        <i class="bi bi-chat-quote"></i>
+        Reviews
+    </a>
+</li>
+        <li>
+            <a href="/admin/subscribers" class="<%= activePage === 'subscribers' ? 'active' : '' %>">
+                <i class="bi bi-envelope"></i>
+                Subscribers
+            </a>
+        </li>
+        <li>
+            <a href="/admin/settings" class="<%= activePage === 'settings' ? 'active' : '' %>">
+                <i class="bi bi-gear"></i>
+                Settings
+            </a>
+        </li>
+    </ul>
+
+        <!-- View Website Link -->
+    <div style="position: absolute; bottom: 80px; left: 20px; right: 20px;">
+        <a href="/" target="_blank" style="color: #F8F3EF; text-decoration: none; padding: 12px 15px; display: flex; align-items: center; border-radius: 6px; transition: all 0.3s; font-size: 13px; background: rgba(201, 164, 92, 0.15); border: 1px solid rgba(201, 164, 92, 0.3);">
+            <i class="bi bi-box-arrow-up-right" style="margin-right: 12px; font-size: 17px; width: 24px; text-align: center;"></i>
+            View Website
+        </a>
+    </div>
+
+    <div class="sidebar-logout">
+        <a href="/admin/logout">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+    </div>
+</div>

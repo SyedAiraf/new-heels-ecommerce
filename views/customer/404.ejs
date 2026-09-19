@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - New Heels</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .error-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: #fff5fa;
+        }
+
+        .error-card {
+            background: white;
+            border-radius: 25px;
+            padding: 60px 50px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 25px 60px rgba(255, 20, 147, 0.1);
+        }
+
+        .error-number {
+            font-size: 120px;
+            font-weight: 700;
+            color: #ff1493;
+            line-height: 1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d0a1e;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: #999;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .error-icon {
+            font-size: 60px;
+            color: #ffb6c1;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4);
+            color: white;
+        }
+
+        .btn-shop-outline {
+            background: transparent;
+            color: #ff1493;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s;
+            border: 2px solid #ff1493;
+            margin: 5px;
+        }
+
+        .btn-shop-outline:hover {
+            background: #ff1493;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <img src="/images/logo.jpg" alt="New Heels" style="height: 60px;">
+                </div>
+                <div class="col-6 text-end">
+                    <a href="/cart" class="header-icon">
+                        <i class="bi bi-cart"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Section -->
+    <section class="error-section">
+        <div class="error-card">
+            <div class="error-icon">
+                <i class="bi bi-emoji-frown"></i>
+            </div>
+            <div class="error-number">404</div>
+            <h1 class="error-title">Oops! Page Not Found</h1>
+            <p class="error-message">
+                We're sorry, but the page you're looking for doesn't exist, has been moved, or is temporarily unavailable.
+            </p>
+            <div>
+                <a href="/" class="btn-home">
+                    <i class="bi bi-house me-2"></i>Go Home
+                </a>
+                <a href="/category/female" class="btn-shop-outline">
+                    <i class="bi bi-bag me-2"></i>Shop Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+   <!-- Footer -->
+<%- include('partials/footer') %>
+</body>
+</html>

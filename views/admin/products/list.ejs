@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - New Heels Admin</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('../partials/sidebar', { activePage: 'products' }) %>
+
+    <div class="main-content">
+        <div class="top-navbar">
+    <div class="d-flex align-items-center gap-3">
+        <div style="width: 45px; height: 45px; background: #F8F3EF; display: flex; align-items: center; justify-content: center; border-left: 3px solid #C9A45C;">
+            <i class="bi bi-box-seam" style="font-size: 22px; color: #8B6688;"></i>
+        </div>
+        <div>
+            <h5 class="m-0">Product Management</h5>
+            <small style="color: #8B6688; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;">Manage all your products</small>
+        </div>
+    </div>
+    <div class="admin-info">
+        <div class="admin-avatar"><%= adminUsername.charAt(0).toUpperCase() %></div>
+        <div>
+            <div class="admin-name"><%= adminUsername %></div>
+            <div class="admin-role">Administrator</div>
+        </div>
+    </div>
+</div>
+
+        <% if (success) { %>
+            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i><%= success %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-danger"><i class="bi bi-exclamation-circle me-2"></i><%= error %></div>
+        <% } %>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <a href="/admin/products?status=all" class="filter-tab <%= currentStatus === 'all' ? 'active' : '' %>">
+                All <span class="count"><%= counts.all %></span>
+            </a>
+            <a href="/admin/products?status=active" class="filter-tab <%= currentStatus === 'active' ? 'active' : '' %>">
+                Active <span class="count"><%= counts.active %></span>
+            </a>
+            <a href="/admin/products?status=hidden" class="filter-tab <%= currentStatus === 'hidden' ? 'active' : '' %>">
+                Hidden <span class="count"><%= counts.hidden %></span>
+            </a>
+        </div>
+
+        <div class="table-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">
+                    <i class="bi bi-box-seam me-2"></i>
+                    <% if (currentStatus === 'active') { %>
+                        Active Products (<%= products.length %>)
+                    <% } else if (currentStatus === 'hidden') { %>
+                        Hidden Products (<%= products.length %>)
+                    <% } else { %>
+                        All Products (<%= products.length %>)
+                    <% } %>
+                </h6>
+                <a href="/admin/products/add" class="btn-add"><i class="bi bi-plus-circle me-2"></i>Add New Product</a>
+            </div>
+
+            <% if (products.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% products.forEach(function(product) { %>
+                                <% var totalStock = 0; %>
+                                <% if (product.variations && product.variations.length > 0) { %>
+                                    <% product.variations.forEach(function(v) { totalStock += v.stock; }); %>
+                                <% } else { %>
+                                    <% totalStock = product.stock; %>
+                                <% } %>
+
+                                <tr style="<%= !product.isActive ? 'opacity: 0.6;' : '' %>">
+                                    <td>
+                                        <% if (product.images && product.images.length > 0) { %>
+                                            <img src="<%= product.images[0] %>" class="product-img" alt="<%= product.name %>">
+                                        <% } else { %>
+                                            <div class="product-img d-flex align-items-center justify-content-center" style="background: #fff5fa;">
+                                                <i class="bi bi-image text-muted"></i>
+                                            </div>
+                                        <% } %>
+                                    </td>
+                                    <td><strong style="color: #2d0a1e;"><%= product.name %></strong></td>
+                                    <td><span class="badge-category badge-<%= product.category %>"><%= product.category.charAt(0).toUpperCase() + product.category.slice(1) %></span></td>
+                                    <td><span class="badge-type badge-<%= product.type %>"><%= product.type.charAt(0).toUpperCase() + product.type.slice(1) %></span></td>
+                                    <td>
+                                        <% if (product.salePrice) { %>
+                                            <strong style="color: #ff1493;">Rs. <%= product.salePrice.toLocaleString() %></strong>
+                                            <br>
+                                            <small style="text-decoration: line-through; color: #ccc;">Rs. <%= product.price.toLocaleString() %></small>
+                                        <% } else { %>
+                                            <strong>Rs. <%= product.price.toLocaleString() %></strong>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (totalStock > 0) { %>
+                                            <span style="background: #e8f5e9; color: #388e3c; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;"><%= totalStock %> in stock</span>
+                                        <% } else { %>
+                                            <span style="background: #fce4ec; color: #c2185b; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">Out of stock</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (product.isActive) { %>
+                                            <span class="badge bg-success">Active</span>
+                                        <% } else { %>
+                                            <span class="badge bg-secondary">Hidden</span>
+                                        <% } %>
+                                    </td>
+                                    <td style="white-space: nowrap;">
+                                        <a href="/admin/products/edit/<%= product._id %>" class="btn-view" title="Edit"><i class="bi bi-pencil"></i></a>
+                                        
+                                        <% if (!product.isActive) { %>
+                                            <form action="/admin/products/restore/<%= product._id %>" method="POST" style="display: inline;" onsubmit="return confirm('Restore this product to Active?');">
+                                                <button type="submit" class="btn-view" style="background: #e8f5e9; color: #388e3c;" title="Restore">
+                                                    <i class="bi bi-arrow-clockwise"></i>
+                                                </button>
+                                            </form>
+                                        <% } %>
+                                        
+                                        <form action="/admin/products/delete/<%= product._id %>" method="POST" style="display: inline;" onsubmit="return confirm('Hide this product from website?');">
+                                            <button type="submit" class="btn-view" style="background: #fce4ec; color: #c2185b;" title="Hide">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="bi bi-box"></i>
+                    <h4>
+                        <% if (currentStatus === 'active') { %>
+                            No Active Products
+                        <% } else if (currentStatus === 'hidden') { %>
+                            No Hidden Products
+                        <% } else { %>
+                            No Products Yet
+                        <% } %>
+                    </h4>
+                    <p>
+                        <% if (currentStatus === 'hidden') { %>
+                            Hidden products will appear here when you hide some.
+                        <% } else { %>
+                            Click "Add New Product" to get started!
+                        <% } %>
+                    </p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

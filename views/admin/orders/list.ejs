@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - New Heels Admin</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('../partials/sidebar', { activePage: 'orders' }) %>
+
+    <div class="main-content">
+        <div class="top-navbar">
+    <div class="d-flex align-items-center gap-3">
+        <div style="width: 45px; height: 45px; background: #F8F3EF; display: flex; align-items: center; justify-content: center; border-left: 3px solid #C9A45C;">
+            <i class="bi bi-cart3" style="font-size: 22px; color: #8B6688;"></i>
+        </div>
+        <div>
+            <h5 class="m-0">Orders Management</h5>
+            <small style="color: #8B6688; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;">Track customer orders</small>
+        </div>
+    </div>
+    <div class="admin-info">
+        <div class="admin-avatar"><%= adminUsername.charAt(0).toUpperCase() %></div>
+        <div>
+            <div class="admin-name"><%= adminUsername %></div>
+            <div class="admin-role">Administrator</div>
+        </div>
+    </div>
+</div>
+
+        <% if (success) { %>
+            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i><%= success %></div>
+        <% } %>
+
+        <div class="filter-tabs">
+            <a href="/admin/orders?status=all" class="filter-tab <%= currentStatus === 'all' ? 'active' : '' %>">All <span class="count"><%= statusCounts.all %></span></a>
+            <a href="/admin/orders?status=pending" class="filter-tab <%= currentStatus === 'pending' ? 'active' : '' %>">Pending <span class="count"><%= statusCounts.pending %></span></a>
+            <a href="/admin/orders?status=confirmed" class="filter-tab <%= currentStatus === 'confirmed' ? 'active' : '' %>">Confirmed <span class="count"><%= statusCounts.confirmed %></span></a>
+            <a href="/admin/orders?status=processing" class="filter-tab <%= currentStatus === 'processing' ? 'active' : '' %>">Processing <span class="count"><%= statusCounts.processing %></span></a>
+            <a href="/admin/orders?status=shipped" class="filter-tab <%= currentStatus === 'shipped' ? 'active' : '' %>">Shipped <span class="count"><%= statusCounts.shipped %></span></a>
+            <a href="/admin/orders?status=delivered" class="filter-tab <%= currentStatus === 'delivered' ? 'active' : '' %>">Delivered <span class="count"><%= statusCounts.delivered %></span></a>
+            <a href="/admin/orders?status=cancelled" class="filter-tab <%= currentStatus === 'cancelled' ? 'active' : '' %>">Cancelled <span class="count"><%= statusCounts.cancelled %></span></a>
+        </div>
+
+        <div class="table-card">
+            <% if (orders.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orders.forEach(function(order) { %>
+                                <tr>
+                                    <td><strong style="color: #ff1493;"><%= order.orderNumber %></strong></td>
+                                    <td>
+                                        <div style="color: #2d0a1e; font-weight: 500;"><%= order.customer.name %></div>
+                                        <div style="color: #999; font-size: 12px;"><%= order.customer.phone %></div>
+                                    </td>
+                                    <td><%= order.items.length %> items</td>
+                                    <td><strong>Rs. <%= order.total.toLocaleString() %></strong></td>
+                                    <td>
+                                        <% if (order.paymentMethod === 'cod') { %>
+                                            <i class="bi bi-cash-coin"></i> COD
+                                        <% } else { %>
+                                            <i class="bi bi-bank"></i> Bank
+                                        <% } %>
+                                    </td>
+                                    <td><span class="badge-status status-<%= order.status %>"><%= order.status %></span></td>
+                                    <td style="font-size: 12px; color: #999;"><%= order.createdAt.toLocaleDateString('en-PK') %></td>
+                                    <td><a href="/admin/orders/<%= order._id %>" class="btn-view"><i class="bi bi-eye"></i> View</a></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="bi bi-cart-x"></i>
+                    <h4>No Orders Yet</h4>
+                    <p>When customers place orders, they'll appear here.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

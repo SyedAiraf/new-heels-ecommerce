@@ -1,0 +1,66 @@
+<div class="subcat-section">
+    <div class="container-fluid px-0">
+        <div class="container">
+            <div class="subcat-header">
+                <div>
+                    <h2><%= title %></h2>
+                    <% if (subtitle) { %>
+                        <p style="color: #8B6688; font-size: 13px; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase;"><%= subtitle %></p>
+                    <% } %>
+                </div>
+                <a href="<%= link %>" class="subcat-view-all">View All <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+        
+        <% if (products && products.length > 0) { %>
+            <div class="products-slider-wrapper">
+                <button class="slider-nav-btn slider-nav-left" onclick="event.preventDefault(); document.getElementById('<%= uniqueId %>').scrollBy({left: -300, behavior: 'smooth'});">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                
+                <div class="products-slider" id="<%= uniqueId %>">
+                    <% products.forEach(function(product) { %>
+                        <a href="/product/<%= product.slug %>" class="product-card-slide">
+                            <div class="product-slide-image-wrapper">
+                                <% if (product.salePrice) { %>
+                                    <span class="product-badge sale">SALE</span>
+                                    <span class="discount-badge">-<%= Math.round(((product.price - product.salePrice) / product.price) * 100) %>%</span>
+                                <% } %>
+                                <% if (product.isNewArrival && !product.salePrice) { %>
+                                    <span class="product-badge new">NEW</span>
+                                <% } %>
+                                <% if (product.images && product.images.length > 0) { %>
+                                    <img src="<%= product.images[0] %>" class="product-slide-image" alt="<%= product.name %>">
+                                <% } else { %>
+                                    <div class="product-slide-image d-flex align-items-center justify-content-center" style="background: #F8F3EF;">
+                                        <i class="bi bi-image" style="font-size: 40px; color: #C9A45C;"></i>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <div class="product-slide-info">
+                                <div class="product-slide-name"><%= product.name %></div>
+                                <% if (product.salePrice) { %>
+                                    <span class="product-slide-price">Rs. <%= product.salePrice.toLocaleString() %></span>
+                                    <span class="product-slide-original">Rs. <%= product.price.toLocaleString() %></span>
+                                <% } else { %>
+                                    <span class="product-slide-price">Rs. <%= product.price.toLocaleString() %></span>
+                                <% } %>
+                            </div>
+                        </a>
+                    <% }); %>
+                </div>
+                
+                <button class="slider-nav-btn slider-nav-right" onclick="event.preventDefault(); document.getElementById('<%= uniqueId %>').scrollBy({left: 300, behavior: 'smooth'});">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        <% } else { %>
+            <div class="container">
+                <div class="empty-subcat">
+                    <i class="bi bi-box-seam"></i>
+                    <p>New products coming soon...</p>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

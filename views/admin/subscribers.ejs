@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribers - New Heels Admin</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('partials/sidebar', { activePage: 'subscribers' }) %>
+
+    <div class="main-content">
+        <div class="top-navbar">
+    <div class="d-flex align-items-center gap-3">
+        <div style="width: 45px; height: 45px; background: #F8F3EF; display: flex; align-items: center; justify-content: center; border-left: 3px solid #C9A45C;">
+            <i class="bi bi-envelope" style="font-size: 22px; color: #8B6688;"></i>
+        </div>
+        <div>
+            <h5 class="m-0">Newsletter Subscribers (<%= subscribers.length %>)</h5>
+            <small style="color: #8B6688; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;">Email list for marketing</small>
+        </div>
+    </div>
+    <div class="admin-info">
+        <div class="admin-avatar"><%= adminUsername.charAt(0).toUpperCase() %></div>
+        <div>
+            <div class="admin-name"><%= adminUsername %></div>
+            <div class="admin-role">Administrator</div>
+        </div>
+    </div>
+</div>
+
+        <div class="table-card">
+            <% if (subscribers.length > 0) { %>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Subscribed Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% subscribers.forEach(function(sub, index) { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= sub.email %></td>
+                                    <td><%= sub.subscribedAt.toLocaleDateString('en-PK') %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <i class="bi bi-envelope"></i>
+                    <h4>No Subscribers Yet</h4>
+                    <p>Customers who subscribe to the newsletter will appear here.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!-- Header -->
+<div class="header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-4 col-md-3">
+                <a href="/" class="logo"><img src="/images/logo.jpg" alt="New Heels"></a>
+            </div>
+            <div class="col-md-6 d-none d-md-block">
+                <form class="search-bar mx-auto" action="/search" method="GET">
+                    <input type="text" name="q" placeholder="Search for shoes, bags..." required>
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+            <div class="col-8 col-md-3 text-end">
+                <div class="header-icons justify-content-end">
+                    <a href="/cart" class="header-icon">
+                        <i class="bi bi-cart"></i>
+                        <span class="badge"><%= typeof cartCount !== 'undefined' ? cartCount : 0 %></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Category Navigation -->
+<div class="category-nav">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+            <a href="/">HOME</a>
+            <a href="/category/men">MEN</a>
+            <a href="/category/kids">KIDS</a>
+            <a href="/category/female">WOMEN</a>
+            <a href="/category/female?sub=shoes-sandals">SALE</a>
+            <a href="/category/female?sub=bags-purses">NEW ARRIVALS</a>
+            <a href="/track-order">TRACK ORDER</a>
+        </div>
+    </div>
+</div>

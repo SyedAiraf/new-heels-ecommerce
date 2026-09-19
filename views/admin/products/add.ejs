@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - New Heels Admin</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('../partials/sidebar', { activePage: 'products' }) %>
+
+    <div class="main-content">
+        <div class="top-navbar">
+    <div class="d-flex align-items-center gap-3">
+        <div style="width: 45px; height: 45px; background: #F8F3EF; display: flex; align-items: center; justify-content: center; border-left: 3px solid #C9A45C;">
+            <i class="bi bi-plus-circle" style="font-size: 22px; color: #8B6688;"></i>
+        </div>
+        <div>
+            <h5 class="m-0">Add New Product</h5>
+            <small style="color: #8B6688; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;">Create a new product listing</small>
+        </div>
+    </div>
+    <div class="admin-info">
+        <div class="admin-avatar"><%= adminUsername.charAt(0).toUpperCase() %></div>
+        <div>
+            <div class="admin-name"><%= adminUsername %></div>
+            <div class="admin-role">Administrator</div>
+        </div>
+    </div>
+</div>
+
+        <% if (error) { %>
+            <div class="alert alert-danger"><i class="bi bi-exclamation-circle me-2"></i><%= error %></div>
+        <% } %>
+
+        <div class="form-card">
+            <h6><i class="bi bi-plus-circle me-2"></i>Product Information</h6>
+
+            <form action="/admin/products/add" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Product Name *</label>
+                        <input type="text" class="form-control" name="name" placeholder="e.g., Elegant High Heels" required>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Category *</label>
+                        <select class="form-select" name="category" id="mainCategory" required onchange="updateSubcategories()">
+                            <option value="">Select Category</option>
+                            <option value="men">Men</option>
+                            <option value="kids">Kids</option>
+                            <option value="female">Women</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Subcategory *</label>
+                        <select class="form-select" name="subcategory" id="subcategory" required>
+                            <option value="">First select category</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Type *</label>
+                        <select class="form-select" name="type" id="productType" required>
+                            <option value="shoe">Shoe</option>
+                            <option value="bag">Bag</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Price (Rs.) *</label>
+                        <input type="number" class="form-control" name="price" step="1" min="0" placeholder="e.g., 5000" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Sale Price (Rs.)</label>
+                        <input type="number" class="form-control" name="salePrice" step="1" min="0" placeholder="Optional">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description *</label>
+                    <textarea class="form-control" name="description" rows="4" placeholder="Describe the product..." required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Product Images</label>
+                    <input type="file" class="form-control" name="images" accept="image/*" multiple>
+                    <small style="color: #999;">Select multiple images at once</small>
+                </div>
+
+                <div id="bagStock" style="display: none;" class="mb-3">
+                    <label class="form-label">Stock Quantity *</label>
+                    <input type="number" class="form-control" name="stock" min="0" placeholder="e.g., 10">
+                </div>
+
+                <div id="shoeVariations">
+                    <div class="section-divider"></div>
+                    <h6 class="mb-3"><i class="bi bi-boxes me-2"></i>Size & Stock Variations</h6>
+                    
+                    <div id="variationsContainer">
+                        <div class="variation-row">
+                            <div class="row">
+                                <div class="col-md-3"><label class="form-label">Size</label><input type="text" class="form-control" name="sizes[]" placeholder="e.g., 40"></div>
+                                <div class="col-md-3"><label class="form-label">Color</label><input type="text" class="form-control" name="colors[]" placeholder="e.g., Black"></div>
+                                <div class="col-md-3"><label class="form-label">Stock</label><input type="number" class="form-control" name="stocks[]" min="0" placeholder="e.g., 5"></div>
+                                <div class="col-md-2"><label class="form-label">SKU</label><input type="text" class="form-control" name="skus[]" placeholder="e.g., NH-40-BLK"></div>
+                                <div class="col-md-1 d-flex align-items-end"><button type="button" class="btn-remove-variation"><i class="bi bi-x"></i></button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-add-variation" id="addVariationBtn">
+                        <i class="bi bi-plus-circle me-2"></i>Add Another Size
+                    </button>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <div class="row">
+                    <div class="col-md-3 mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" name="isFeatured" id="isFeatured"><label class="form-check-label" for="isFeatured">Featured Product</label></div></div>
+                    <div class="col-md-3 mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" name="isNewArrival" id="isNewArrival"><label class="form-check-label" for="isNewArrival">New Arrival</label></div></div>
+                    <div class="col-md-3 mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" name="isBestSeller" id="isBestSeller"><label class="form-check-label" for="isBestSeller">Best Seller</label></div></div>
+                    <div class="col-md-3 mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" name="isActive" id="isActive" checked><label class="form-check-label" for="isActive">Active</label></div></div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="/admin/products" class="btn-cancel"><i class="bi bi-x-circle me-2"></i>Cancel</a>
+                    <button type="submit" class="btn-submit"><i class="bi bi-check-circle me-2"></i>Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Subcategory data
+        const subcategories = {
+            'men': [
+                { value: 'shoes', label: 'Shoes' },
+                { value: 'chappals', label: 'Chappals' },
+                { value: 'peshawri', label: 'Peshawri Chappals' }
+            ],
+            'kids': [
+                { value: 'toddler', label: 'Toddler (1-4 years)' },
+                { value: 'little-kids', label: 'Little Kids (4-8 years)' },
+                { value: 'big-kids', label: 'Big Kids (8-12 years)' }
+            ],
+            'female': [
+                { value: 'bags-purses', label: 'Bags & Purses' },
+                { value: 'shoes-sandals', label: 'Shoes & Sandals' }
+            ]
+        };
+        
+        function updateSubcategories() {
+            const category = document.getElementById('mainCategory').value;
+            const subSelect = document.getElementById('subcategory');
+            
+            subSelect.innerHTML = '<option value="">Select Subcategory</option>';
+            
+            if (category && subcategories[category]) {
+                subcategories[category].forEach(function(sub) {
+                    const option = document.createElement('option');
+                    option.value = sub.value;
+                    option.textContent = sub.label;
+                    subSelect.appendChild(option);
+                });
+            }
+        }
+        
+        // Product type change
+        document.getElementById('productType').addEventListener('change', function() {
+            const type = this.value;
+            if (type === 'shoe') {
+                document.getElementById('shoeVariations').style.display = 'block';
+                document.getElementById('bagStock').style.display = 'none';
+            } else if (type === 'bag') {
+                document.getElementById('shoeVariations').style.display = 'none';
+                document.getElementById('bagStock').style.display = 'block';
+            }
+        });
+
+        // Add variation row
+        document.getElementById('addVariationBtn').addEventListener('click', function() {
+            const container = document.getElementById('variationsContainer');
+            const newRow = document.createElement('div');
+            newRow.className = 'variation-row';
+            newRow.innerHTML = `
+                <div class="row">
+                    <div class="col-md-3"><label class="form-label">Size</label><input type="text" class="form-control" name="sizes[]" placeholder="e.g., 41"></div>
+                    <div class="col-md-3"><label class="form-label">Color</label><input type="text" class="form-control" name="colors[]" placeholder="e.g., Brown"></div>
+                    <div class="col-md-3"><label class="form-label">Stock</label><input type="number" class="form-control" name="stocks[]" min="0" placeholder="e.g., 8"></div>
+                    <div class="col-md-2"><label class="form-label">SKU</label><input type="text" class="form-control" name="skus[]" placeholder="e.g., NH-41-BRN"></div>
+                    <div class="col-md-1 d-flex align-items-end"><button type="button" class="btn-remove-variation"><i class="bi bi-x"></i></button></div>
+                </div>
+            `;
+            container.appendChild(newRow);
+            newRow.querySelector('.btn-remove-variation').addEventListener('click', function() { newRow.remove(); });
+        });
+
+        document.querySelectorAll('.btn-remove-variation').forEach(btn => {
+            btn.addEventListener('click', function() { this.closest('.variation-row').remove(); });
+        });
+    </script>
+</body>
+</html>

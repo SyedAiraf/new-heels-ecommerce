@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Heels - Premium Shoes & Bags in Pakistan</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/home.css" rel="stylesheet">
+</head>
+<body>
+    <% if (session && session.adminId) { %>
+        <a href="/admin/dashboard" style="position: fixed; bottom: 20px; left: 20px; background: #8B6688; color: white; padding: 12px 20px; text-decoration: none; font-weight: 500; box-shadow: 0 10px 30px rgba(139, 102, 136, 0.4); z-index: 9999; display: flex; align-items: center; gap: 8px; letter-spacing: 1px; font-size: 13px;">
+            <i class="bi bi-speedometer2"></i> Back to Admin
+        </a>
+    <% } %>
+
+    <% if (newsletterStatus === 'success') { %>
+        <div class="newsletter-alert success" id="newsletterAlert"><i class="bi bi-check-circle me-2"></i>Thank you for subscribing! 🎉</div>
+    <% } %>
+    <% if (newsletterStatus === 'already') { %>
+        <div class="newsletter-alert warning" id="newsletterAlert">You are already subscribed! 📧</div>
+    <% } %>
+
+    <% if (announcementBar && announcementBar.enabled) { %>
+        <div class="announcement-bar"><%= announcementBar.text %></div>
+    <% } %>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4 col-md-3">
+                    <a href="/" class="logo"><img src="/images/logo.jpg" alt="New Heels"></a>
+                </div>
+                <div class="col-md-6 d-none d-md-block">
+                    <form class="search-bar mx-auto" action="/search" method="GET">
+    <input type="text" name="q" placeholder="Search for shoes, bags..." required>
+    <button type="submit"><i class="bi bi-search"></i></button>
+</form>
+                </div>
+                <div class="col-8 col-md-3 text-end">
+                    <div class="header-icons justify-content-end">
+                        <a href="#" class="header-icon"><i class="bi bi-heart"></i></a>
+                        <a href="/cart" class="header-icon">
+                            <i class="bi bi-cart"></i>
+                            <span class="badge"><%= typeof cartCount !== 'undefined' ? cartCount : 0 %></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Category Navigation -->
+<div class="category-nav">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+            <a href="/">HOME</a>
+            <a href="/category/men">MEN</a>
+            <a href="/category/kids">KIDS</a>
+            <a href="/category/female">WOMEN</a>
+            <a href="/category/female?sub=shoes-sandals">SALE</a>
+            <a href="/category/female?sub=bags-purses">NEW ARRIVALS</a>
+            <a href="/track-order">TRACK ORDER</a>
+        </div>
+    </div>
+</div>
+    <!-- Hero Slider -->
+    <div class="hero-slider">
+        <% if (typeof banners !== 'undefined' && banners && banners.length > 0) { %>
+            <div class="hero-slides">
+                <% banners.forEach(function(banner) { %>
+                    <div class="hero-slide" style="background-image: url('<%= banner.image %>');">
+                        <div class="hero-content">
+                            <h1><%= banner.title %></h1>
+                            <p><%= banner.subtitle %></p>
+                            <a href="<%= banner.buttonLink %>" class="btn-shop"><%= banner.buttonText %></a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+            <% if (banners.length > 1) { %>
+                <button class="hero-arrow hero-arrow-left"><i class="bi bi-chevron-left"></i></button>
+                <button class="hero-arrow hero-arrow-right"><i class="bi bi-chevron-right"></i></button>
+                <div class="hero-dots">
+                    <% banners.forEach(function(banner, index) { %>
+                        <div class="hero-dot <%= index === 0 ? 'active' : '' %>"></div>
+                    <% }); %>
+                </div>
+            <% } %>
+        <% } else { %>
+            <div class="hero-slides">
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=1600&q=80');">
+                    <div class="hero-content">
+                        <h1>Step Into Style</h1>
+                        <p>Discover the latest collection of women's heels & bags</p>
+                        <a href="/category/female" class="btn-shop">Shop Women</a>
+                    </div>
+                </div>
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=1600&q=80');">
+                    <div class="hero-content">
+                        <h1>Crafted for Gentlemen</h1>
+                        <p>Premium shoes for the modern man</p>
+                        <a href="/category/men" class="btn-shop">Shop Men</a>
+                    </div>
+                </div>
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=1600&q=80');">
+                    <div class="hero-content">
+                        <h1>Fun for Little Feet</h1>
+                        <p>Comfortable & stylish shoes for kids</p>
+                        <a href="/category/kids" class="btn-shop">Shop Kids</a>
+                    </div>
+                </div>
+                <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1600&q=80');">
+                    <div class="hero-content">
+                        <h1>Mega Sale</h1>
+                        <p>Up to 50% Off on Selected Items</p>
+                        <a href="/category/female" class="btn-shop">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <button class="hero-arrow hero-arrow-left"><i class="bi bi-chevron-left"></i></button>
+            <button class="hero-arrow hero-arrow-right"><i class="bi bi-chevron-right"></i></button>
+            <div class="hero-dots">
+                <div class="hero-dot active"></div>
+                <div class="hero-dot"></div>
+                <div class="hero-dot"></div>
+                <div class="hero-dot"></div>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Category Tiles -->
+    <div class="category-tiles">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <a href="/category/men" class="category-tile">
+                        <img src="https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800&q=80" class="category-tile-image" alt="Men">
+                        <div class="category-tile-overlay">
+                            <h3>MEN</h3>
+                            <p>SHOES & CHAPPALS</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-12">
+                    <a href="/category/kids" class="category-tile">
+                        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80" class="category-tile-image" alt="Kids">
+                        <div class="category-tile-overlay">
+                            <h3>KIDS</h3>
+                            <p>TODDLER TO BIG KIDS</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-12">
+                    <a href="/category/female" class="category-tile">
+                        <img src="https://images.unsplash.com/photo-1596703263926-eb0762ee17e4?w=800&q=80" class="category-tile-image" alt="Women">
+                        <div class="category-tile-overlay">
+                            <h3>WOMEN</h3>
+                            <p>BAGS, PURSES & HEELS</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the subcategory section partials -->
+    <%- include('partials/subcat-section', { 
+        title: "MEN'S SHOES", 
+        subtitle: "Formal & casual", 
+        products: menShoes, 
+        link: "/category/men?sub=shoes",
+        uniqueId: 'men-shoes'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "MEN'S CHAPPALS", 
+        subtitle: "Traditional comfort", 
+        products: menChappals, 
+        link: "/category/men?sub=chappals",
+        uniqueId: 'men-chappals'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "PESHAWRI CHAPPALS", 
+        subtitle: "Heritage craftsmanship", 
+        products: menPeshawri, 
+        link: "/category/men?sub=peshawri",
+        uniqueId: 'men-peshawri'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "KIDS' TODDLER (1-4 YRS)", 
+        subtitle: "First steps in style", 
+        products: kidsToddler, 
+        link: "/category/kids?sub=toddler",
+        uniqueId: 'kids-toddler'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "LITTLE KIDS (4-8 YRS)", 
+        subtitle: "Playful & comfortable", 
+        products: kidsLittle, 
+        link: "/category/kids?sub=little-kids",
+        uniqueId: 'kids-little'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "BIG KIDS (8-12 YRS)", 
+        subtitle: "Growing in style", 
+        products: kidsBig, 
+        link: "/category/kids?sub=big-kids",
+        uniqueId: 'kids-big'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "WOMEN'S BAGS & PURSES", 
+        subtitle: "Elegant & timeless", 
+        products: womenBags, 
+        link: "/category/female?sub=bags-purses",
+        uniqueId: 'women-bags'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "WOMEN'S SHOES & SANDALS", 
+        subtitle: "Step into luxury", 
+        products: womenShoes, 
+        link: "/category/female?sub=shoes-sandals",
+        uniqueId: 'women-shoes'
+    }) %>
+
+    <!-- Promo Banner -->
+    <% if (promoBanner && promoBanner.enabled) { %>
+    <div class="promo-banner">
+        <div class="container">
+            <h3><%= promoBanner.title %></h3>
+            <p><%= promoBanner.subtitle %></p>
+        </div>
+    </div>
+    <% } %>
+
+    <%- include('partials/subcat-section', { 
+        title: "NEW ARRIVALS", 
+        subtitle: "Fresh styles just landed", 
+        products: newArrivals, 
+        link: "/category/female",
+        uniqueId: 'new-arrivals'
+    }) %>
+
+    <%- include('partials/subcat-section', { 
+        title: "BEST SELLERS", 
+        subtitle: "Most loved by customers", 
+        products: bestSellers, 
+        link: "/category/female",
+        uniqueId: 'best-sellers'
+    }) %>
+
+    <!-- Trust Badges -->
+    <div class="trust-badges">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="trust-badge">
+                        <i class="bi bi-truck"></i>
+                        <h5>Free Shipping</h5>
+                        <p>On orders above Rs. 4,000</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-badge">
+                        <i class="bi bi-cash-coin"></i>
+                        <h5>Cash on Delivery</h5>
+                        <p>Pay when you receive</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-badge">
+                        <i class="bi bi-arrow-clockwise"></i>
+                        <h5>Easy Returns</h5>
+                        <p>7-day return policy</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="trust-badge">
+                        <i class="bi bi-shield-check"></i>
+                        <h5>Secure Payment</h5>
+                        <p>100% safe checkout</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Footer -->
+<%- include('partials/footer') %>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="active"><i class="bi bi-house"></i> Home</a>
+        <a href="/category/men"><i class="bi bi-person"></i> Men</a>
+        <a href="/category/kids"><i class="bi bi-emoji-smile"></i> Kids</a>
+        <a href="/category/female"><i class="bi bi-heart"></i> Women</a>
+        <a href="/cart"><i class="bi bi-cart"></i> Cart</a>
+    </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/923277985292?text=Hello%20New%20Heels" class="whatsapp-btn" target="_blank">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

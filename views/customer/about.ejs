@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - New Heels</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        body { background: #F8F3EF; }
+        .page-header { padding: 60px 0 30px; text-align: center; }
+        .page-header h1 { color: #3F3040; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; font-size: 32px; margin-bottom: 15px; }
+        .page-header p { color: #8B6688; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+        .about-card { background: white; padding: 60px 50px; border-top: 4px solid #C9A45C; max-width: 900px; margin: 0 auto 60px; box-shadow: 0 5px 30px rgba(63, 48, 64, 0.05); text-align: center; }
+        .about-logo { width: 140px; height: 140px; object-fit: contain; margin: 0 auto 25px; display: block; }
+        .about-card h3 { color: #3F3040; font-size: 22px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; }
+        .about-card p { color: #5a4a5c; font-size: 14px; line-height: 1.9; margin-bottom: 15px; max-width: 650px; margin-left: auto; margin-right: auto; }
+        .about-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .value-card { padding: 30px 20px; background: #F8F3EF; }
+        .value-card i { font-size: 36px; color: #C9A45C; display: block; margin-bottom: 15px; }
+        .value-card h5 { color: #3F3040; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+        .value-card p { font-size: 12px; color: #8B6688; margin: 0; }
+        @media (max-width: 768px) {
+            .about-values { grid-template-columns: 1fr; }
+            .about-card { padding: 40px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>About Us</h1>
+            <p>Elegance in Every Step</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="about-card">
+            <img src="/images/logo.jpg" alt="New Heels" class="about-logo">
+            <h3>New Heels</h3>
+            <p>Welcome to <strong>New Heels</strong> — Pakistan's destination for premium quality shoes and bags.</p>
+            <p>We started with a simple mission: to provide our customers with stylish, comfortable, and durable footwear for every member of the family. From men's formal shoes and traditional Peshawri chappals to women's elegant heels and bags, and kids' comfortable shoes — we have something for everyone.</p>
+            <p>Every product in our collection is hand-picked for quality and craftsmanship. We're committed to providing you with the best shopping experience and customer service in Pakistan.</p>
+
+            <div class="about-values">
+                <div class="value-card">
+                    <i class="bi bi-award"></i>
+                    <h5>Premium Quality</h5>
+                    <p>Handpicked products from trusted brands</p>
+                </div>
+                <div class="value-card">
+                    <i class="bi bi-truck"></i>
+                    <h5>Fast Delivery</h5>
+                    <p>Nationwide shipping across Pakistan</p>
+                </div>
+                <div class="value-card">
+                    <i class="bi bi-people"></i>
+                    <h5>Customer First</h5>
+                    <p>Your satisfaction is our priority</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

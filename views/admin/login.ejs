@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - New Heels</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3F3040 0%, #8B6688 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            color: rgba(201, 164, 92, 0.15);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .heart-1 { top: 10%; left: 15%; font-size: 30px; }
+        .heart-2 { top: 60%; right: 10%; font-size: 40px; animation-delay: 1s; }
+        .heart-3 { bottom: 15%; left: 25%; font-size: 25px; animation-delay: 2s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        
+        .login-container {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 55px 45px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+            animation: slideIn 0.8s ease-out;
+            border: 1px solid #F8F3EF;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .brand-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: #3F3040;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .brand-tagline {
+            font-size: 11px;
+            color: #C9A45C;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        .form-label {
+            display: block;
+            color: #3F3040;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8B6688;
+            font-size: 17px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 48px;
+            border: 1px solid #E8DFD5;
+            font-size: 14px;
+            background: #F8F3EF;
+            color: #3F3040;
+            transition: all 0.3s;
+            border-radius: 0;
+        }
+        
+        .form-control::placeholder {
+            color: #B9A0C0;
+        }
+        
+        .form-control:focus {
+            border-color: #8B6688;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(139, 102, 136, 0.1);
+            outline: none;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: #8B6688;
+            border: none;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 10px;
+        }
+        
+        .btn-login:hover {
+            background: #3F3040;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(63, 48, 64, 0.3);
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        
+        .alert-danger {
+            background: #F8F3EF;
+            border-left: 3px solid #8B6688;
+            color: #3F3040;
+        }
+        
+        .alert-success {
+            background: #F8F3EF;
+            border-left: 3px solid #C9A45C;
+            color: #3F3040;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="floating-element heart-1">♥</div>
+    <div class="floating-element heart-2">♥</div>
+    <div class="floating-element heart-3">♥</div>
+
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo-wrapper">
+                <img src="/images/logo.jpg" alt="New Heels">
+            </div>
+            <h1 class="brand-name">New Heels</h1>
+            <p class="brand-tagline">Admin Panel</p>
+        </div>
+
+        <% if (error) { %>
+            <div class="alert alert-danger"><i class="bi bi-exclamation-circle me-2"></i><%= error %></div>
+        <% } %>
+        <% if (success) { %>
+            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i><%= success %></div>
+        <% } %>
+
+        <form action="/admin/login" method="POST">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <div class="input-wrapper">
+                    <input type="text" class="form-control" name="username" placeholder="Enter your username" required autofocus>
+                    <i class="bi bi-person"></i>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                    <i class="bi bi-lock"></i>
+                </div>
+            </div>
+            <button type="submit" class="btn-login">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+            </button>
+        </form>
+
+       
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | New Heels - Free Delivery Over Rs. 4,000</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/cart.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4 col-md-3">
+                   <img src="/images/logo.jpg" alt="New Heels" style="height: 60px;">
+                </div>
+                <div class="col-md-6 d-none d-md-block">
+                    <form class="search-bar mx-auto" action="/search" method="GET">
+    <input type="text" name="q" placeholder="Search for shoes, bags..." required>
+    <button type="submit"><i class="bi bi-search"></i></button>
+</form>
+                </div>
+                <div class="col-8 col-md-3 text-end">
+                    <div class="header-icons justify-content-end">
+                        <a href="#" class="header-icon"><i class="bi bi-heart"></i></a>
+                        <a href="/cart" class="header-icon">
+                            <i class="bi bi-cart"></i>
+                            <span class="badge" id="cartBadge"><%= cartCount %></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Navigation -->
+    <div class="category-nav">
+        <div class="container">
+            <div class="d-flex justify-content-center flex-wrap">
+                <a href="/">HOME</a>
+                <a href="/category/men">MEN</a>
+                <a href="/category/kids">KIDS</a>
+                <a href="/category/female">WOMEN</a>
+                <a href="/category/female">PURSES</a>
+                <a href="#">SALE</a>
+                <a href="#">NEW ARRIVALS</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1>🛒 Shopping Cart</h1>
+            <p>Review your items and proceed to checkout</p>
+        </div>
+    </div>
+
+    <!-- Cart Content -->
+    <div class="container mb-5">
+        <% if (cartItems.length > 0) { %>
+            <div class="row">
+                <!-- Cart Items -->
+                <div class="col-md-8">
+                    <div class="cart-card">
+                        <h4 style="color: #2d0a1e; font-weight: 700; margin-bottom: 15px;">
+                            Cart Items (<%= cartItems.length %>)
+                        </h4>
+                        
+                        <% cartItems.forEach(function(item) { %>
+                            <div class="cart-item">
+                                <img src="<%= item.image || 'https://via.placeholder.com/100x100/ffe0ef/ff1493?text=Product' %>" 
+                                     class="cart-item-image" alt="<%= item.name %>">
+                                
+                                <div class="cart-item-info">
+                                    <div class="cart-item-name"><%= item.name %></div>
+                                    <% if (item.size) { %>
+                                        <div class="cart-item-details">Size: <%= item.size %></div>
+                                    <% } %>
+                                    <% if (item.color) { %>
+                                        <div class="cart-item-details">Color: <%= item.color %></div>
+                                    <% } %>
+                                    <div>
+                                        <span class="cart-item-price">Rs. <%= item.price.toLocaleString() %></span>
+                                        <% if (item.salePrice) { %>
+                                            <span class="cart-item-original">Rs. <%= item.originalPrice.toLocaleString() %></span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn" onclick="updateQuantity('<%= item.productId %>', '<%= item.size %>', '<%= item.color %>', <%= item.quantity - 1 %>)">-</button>
+                                        <input type="text" class="quantity-input" value="<%= item.quantity %>" readonly>
+                                        <button class="quantity-btn" onclick="updateQuantity('<%= item.productId %>', '<%= item.size %>', '<%= item.color %>', <%= item.quantity + 1 %>)">+</button>
+                                    </div>
+                                    <div style="font-weight: 700; color: #ff1493; font-size: 15px;">
+                                        Rs. <%= item.itemTotal.toLocaleString() %>
+                                    </div>
+                                    <button class="btn-remove" onclick="removeItem('<%= item.productId %>', '<%= item.size %>', '<%= item.color %>')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="col-md-4">
+                    <div class="cart-summary">
+                        <h4>Order Summary</h4>
+                        
+                        <% if (deliveryCharge === 0) { %>
+                            <div class="free-shipping-notice">
+                                <i class="bi bi-check-circle me-2"></i>
+                                FREE SHIPPING!
+                            </div>
+                        <% } else { %>
+                            <div class="free-shipping-notice" style="background: #fff3e0; color: #f57c00;">
+                                <i class="bi bi-truck me-2"></i>
+                                Add Rs. <%= (5000 - subtotal).toLocaleString() %> more for FREE shipping
+                            </div>
+                        <% } %>
+                        
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span class="price">Rs. <%= subtotal.toLocaleString() %></span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Delivery Charges</span>
+                            <span class="price">
+                                <% if (deliveryCharge === 0) { %>FREE<% } else { %>Rs. <%= deliveryCharge.toLocaleString() %><% } %>
+                            </span>
+                        </div>
+                        
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span class="price">Rs. <%= total.toLocaleString() %></span>
+                        </div>
+                        
+                        <a href="/checkout" class="btn-checkout">
+                            <i class="bi bi-lock me-2"></i> Proceed to Checkout
+                        </a>
+                        
+                        <a href="/" class="btn-continue">
+                            <i class="bi bi-arrow-left me-2"></i> Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="empty-cart">
+                <i class="bi bi-cart-x"></i>
+                <h3>Your Cart is Empty</h3>
+                <p>Looks like you haven't added anything to your cart yet.</p>
+                <a href="/" class="btn-shop-now">
+                    <i class="bi bi-bag me-2"></i> Start Shopping
+                </a>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Footer -->
+<%- include('partials/footer') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/cart.js"></script>
+</body>
+</html>

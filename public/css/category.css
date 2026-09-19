@@ -1,0 +1,33 @@
+/* ============ SUBCATEGORY TABS ============ */
+.subcat-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 45px;
+    padding: 0 15px;
+}
+
+.subcat-tab {
+    padding: 12px 24px;
+    background: #FFFFFF;
+    border: 1px solid #E8DFD5;
+    color: #3F3040;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+}
+
+.subcat-tab:hover {
+    border-color: #8B6688;
+    color: #8B6688;
+}
+
+.subcat-tab.active {
+    background: #8B6688;
+    color: white;
+    border-color: #8B6688;
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - New Heels Admin</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('partials/sidebar', { activePage: 'settings' }) %>
+
+    <div class="main-content">
+        <div class="top-navbar">
+    <div class="d-flex align-items-center gap-3">
+        <div style="width: 45px; height: 45px; background: #F8F3EF; display: flex; align-items: center; justify-content: center; border-left: 3px solid #C9A45C;">
+            <i class="bi bi-gear" style="font-size: 22px; color: #8B6688;"></i>
+        </div>
+        <div>
+            <h5 class="m-0">Store Settings</h5>
+            <small style="color: #8B6688; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;">Configure your store</small>
+        </div>
+    </div>
+    <div class="admin-info">
+        <div class="admin-avatar"><%= adminUsername.charAt(0).toUpperCase() %></div>
+        <div>
+            <div class="admin-name"><%= adminUsername %></div>
+            <div class="admin-role">Administrator</div>
+        </div>
+    </div>
+</div>
+
+        <% if (success) { %>
+            <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i><%= success %></div>
+        <% } %>
+
+        <!-- Promo Banner -->
+        <div class="form-card">
+            <h6><i class="bi bi-megaphone me-2"></i>Promo Banner Settings</h6>
+            <form action="/admin/settings/promo" method="POST">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="enabled" id="promoEnabled" <%= promoBanner.enabled ? 'checked' : '' %>>
+                        <label class="form-check-label" for="promoEnabled">Enable Promo Banner</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Banner Title</label>
+                    <input type="text" class="form-control" name="title" value="<%= promoBanner.title %>" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Banner Subtitle</label>
+                    <input type="text" class="form-control" name="subtitle" value="<%= promoBanner.subtitle %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Discount Percentage</label>
+                    <input type="number" class="form-control" name="discountPercent" value="<%= promoBanner.discountPercent %>" min="0" max="100">
+                </div>
+                <button type="submit" class="btn-submit">Save Promo Banner</button>
+            </form>
+        </div>
+
+        <!-- Announcement Bar -->
+        <div class="form-card">
+            <h6><i class="bi bi-bell me-2"></i>Announcement Bar Settings</h6>
+            <form action="/admin/settings/announcement" method="POST">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="enabled" id="announcementEnabled" <%= announcementBar.enabled ? 'checked' : '' %>>
+                        <label class="form-check-label" for="announcementEnabled">Enable Announcement Bar</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Announcement Text</label>
+                    <input type="text" class="form-control" name="text" value="<%= announcementBar.text %>" required>
+                </div>
+                <button type="submit" class="btn-submit">Save Announcement</button>
+            </form>
+        </div>
+
+        <!-- Store Contact Info -->
+        <div class="form-card">
+            <h6><i class="bi bi-telephone me-2"></i>Store Contact Info</h6>
+            <form action="/admin/settings/contact" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" name="phone" value="<%= contactInfo.phone || '03277985292' %>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">WhatsApp Number</label>
+                        <input type="text" class="form-control" name="whatsapp" value="<%= contactInfo.whatsapp || '03277985292' %>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" name="email" value="<%= contactInfo.email || 'newheelsmardan@gmail.com' %>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city" value="<%= contactInfo.city || 'Mardan, Pakistan' %>">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Save Contact Info</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

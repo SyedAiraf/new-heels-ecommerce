@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> - New Heels</title>
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+<link rel="apple-touch-icon" href="/images/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/product.css" rel="stylesheet">
+</head>
+<body>
+     <% if (session && session.adminId) { %>
+        <a href="/admin/dashboard" style="position: fixed; bottom: 20px; left: 20px; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; font-weight: 600; box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4); z-index: 9999; display: flex; align-items: center; gap: 8px;">
+            <i class="bi bi-speedometer2"></i>
+            Back to Admin
+        </a>
+    <% } %>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4 col-md-3">
+                    <img src="/images/logo.jpg" alt="New Heels" style="height: 60px;">
+                </div>
+                <div class="col-md-6 d-none d-md-block">
+                    <form class="search-bar mx-auto" action="/search" method="GET">
+    <input type="text" name="q" placeholder="Search for shoes, bags..." required>
+    <button type="submit"><i class="bi bi-search"></i></button>
+</form>
+                </div>
+                <div class="col-8 col-md-3 text-end">
+                    <div class="header-icons justify-content-end">
+                        <a href="#" class="header-icon"><i class="bi bi-heart"></i></a>
+                        <a href="/cart" class="header-icon">
+                            <i class="bi bi-cart"></i>
+                            <span class="badge"><%= typeof cartCount !== 'undefined' ? cartCount : 0 %></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Navigation -->
+    <div class="category-nav">
+        <div class="container">
+            <div class="d-flex justify-content-center flex-wrap">
+                <a href="/">HOME</a>
+                <a href="/category/men">MEN</a>
+                <a href="/category/kids">KIDS</a>
+                <a href="/category/female">WOMEN</a>
+                <a href="/category/female">PURSES</a>
+                <a href="#">SALE</a>
+                <a href="#">NEW ARRIVALS</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail -->
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="row">
+                <!-- Images -->
+                <div class="col-md-6">
+                    <% if (product.images && product.images.length > 0) { %>
+                        <img src="<%= product.images[0] %>" class="main-image" id="mainImage" alt="<%= product.name %>">
+                        <div class="thumbnail-images">
+                            <% product.images.forEach(function(image, index) { %>
+                                <img src="<%= image %>" class="thumbnail" onclick="document.getElementById('mainImage').src = this.src" alt="Thumbnail <%= index + 1 %>">
+                            <% }); %>
+                        </div>
+                    <% } else { %>
+                        <div class="main-image d-flex align-items-center justify-content-center">
+                            <i class="bi bi-image" style="font-size: 80px; color: #ffb6c1;"></i>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Product Info -->
+                <div class="col-md-6">
+                    <div class="product-category">
+                        <%= product.category.charAt(0).toUpperCase() + product.category.slice(1) %>'s <%= product.type %>
+                    </div>
+                    <h1 class="product-title"><%= product.name %></h1>
+
+                    <div class="price-section">
+                        <% if (product.salePrice) { %>
+                            <span class="current-price">Rs. <%= product.salePrice.toLocaleString() %></span>
+                            <span class="original-price">Rs. <%= product.price.toLocaleString() %></span>
+                            <span class="discount-badge-detail">-<%= Math.round(((product.price - product.salePrice) / product.price) * 100) %>%</span>
+                        <% } else { %>
+                            <span class="current-price">Rs. <%= product.price.toLocaleString() %></span>
+                        <% } %>
+                    </div>
+
+                    <p class="description"><%= product.description %></p>
+
+                    <!-- Stock Status -->
+                    <% var totalStock = 0; %>
+                    <% if (product.variations && product.variations.length > 0) { %>
+                        <% product.variations.forEach(function(v) { totalStock += v.stock; }); %>
+                    <% } else { %>
+                        <% totalStock = product.stock; %>
+                    <% } %>
+
+                    <% if (totalStock > 0) { %>
+                        <div class="stock-status in-stock"><i class="bi bi-check-circle"></i> In Stock</div>
+                    <% } else { %>
+                        <div class="stock-status out-of-stock"><i class="bi bi-x-circle"></i> Sold Out</div>
+                    <% } %>
+
+                    <!-- Size Selection for Shoes -->
+<% if (product.type === 'shoe' && product.variations && product.variations.length > 0) { %>
+    <div class="size-selector">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h6 style="margin: 0;">Select Size:</h6>
+            <button type="button" onclick="openSizeChart()" style="background: none; border: none; color: #8B6688; font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; padding: 0; text-decoration: underline;">
+                <i class="bi bi-rulers"></i> Size Guide
+            </button>
+        </div>
+        <% product.variations.forEach(function(variation) { %>
+            <button class="size-btn" onclick="selectSize(this)"><%= variation.size %></button>
+        <% }); %>
+    </div>
+<% } %>
+
+                    <!-- Quantity -->
+                    <div class="mb-3">
+                        <label style="font-weight: 500; color: #2d0a1e; margin-bottom: 8px; display: block;">Quantity:</label>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQty(-1)">-</button>
+                            <input type="text" id="quantity" class="quantity-input" value="1" readonly>
+                            <button class="quantity-btn" onclick="changeQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart -->
+                    <% if (totalStock > 0) { %>
+                        <button class="btn-add-to-cart" onclick="addToCart('<%= product._id %>', '<%= product.type %>')">
+                            <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                        </button>
+                    <% } else { %>
+                        <button class="btn-add-to-cart" disabled style="background: #ccc; cursor: not-allowed;">Sold Out</button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        </section>
+
+    <!-- Customer Reviews Section -->
+    <section class="reviews-section" id="reviews">
+        <div class="container">
+            <div class="reviews-wrapper">
+                
+                <!-- Rating Summary -->
+                <div class="rating-summary">
+                    <div class="rating-summary-left">
+                        <div class="rating-big"><%= averageRating || '0.0' %></div>
+                        <div class="rating-stars-big">
+                            <% for (var i = 1; i <= 5; i++) { %>
+                                <i class="bi bi-star<%= i <= Math.round(averageRating) ? '-fill' : '' %>"></i>
+                            <% } %>
+                        </div>
+                        <div class="rating-count">
+                            Based on <strong><%= reviewCount %></strong> review<%= reviewCount !== 1 ? 's' : '' %>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-summary-right">
+                        <% for (var star = 5; star >= 1; star--) { %>
+                            <% 
+                                var count = ratingCounts[star] || 0;
+                                var percentage = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
+                            %>
+                            <div class="rating-bar-row">
+                                <span class="rating-bar-label"><%= star %> <i class="bi bi-star-fill"></i></span>
+                                <div class="rating-bar">
+                                    <div class="rating-bar-fill" style="width: <%= percentage %>%;"></div>
+                                </div>
+                                <span class="rating-bar-count"><%= count %></span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                
+                <!-- Success/Error Messages -->
+                <% if (typeof reviewSuccess !== 'undefined' && reviewSuccess) { %>
+                    <div class="review-alert success">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Thank you! Your review has been submitted.
+                    </div>
+                <% } %>
+                
+                <% if (typeof reviewError !== 'undefined' && reviewError) { %>
+                    <div class="review-alert error">
+                        <i class="bi bi-exclamation-circle me-2"></i>
+                        <%= reviewError %>
+                    </div>
+                <% } %>
+                
+                <!-- Reviews List -->
+                <div class="reviews-list">
+                    <h3 class="reviews-heading">
+                        <i class="bi bi-chat-quote"></i>
+                        Customer Reviews
+                    </h3>
+                    
+                    <% if (reviews && reviews.length > 0) { %>
+                        <% reviews.forEach(function(review) { %>
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <div class="reviewer-info">
+                                        <div class="reviewer-avatar"><%= review.name.charAt(0).toUpperCase() %></div>
+                                        <div>
+                                            <div class="reviewer-name"><%= review.name %></div>
+                                            <div class="review-date"><%= review.createdAt.toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+                                        </div>
+                                    </div>
+                                    <div class="review-stars">
+                                        <% for (var i = 1; i <= 5; i++) { %>
+                                            <i class="bi bi-star<%= i <= review.rating ? '-fill' : '' %>"></i>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="review-comment">
+                                    <%= review.comment %>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="no-reviews">
+                            <i class="bi bi-chat-square-text"></i>
+                            <p>No reviews yet. Be the first to review this product!</p>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <!-- Write Review Form -->
+                <div class="write-review">
+                    <h3 class="reviews-heading">
+                        <i class="bi bi-pencil-square"></i>
+                        Write a Review
+                    </h3>
+                    
+                    <form action="/product/<%= product.slug %>/review" method="POST">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Your Rating *</label>
+                              <div class="star-picker" id="starPicker">
+    <i class="bi bi-star star-item" data-value="1" onclick="setRating(1)"></i>
+    <i class="bi bi-star star-item" data-value="2" onclick="setRating(2)"></i>
+    <i class="bi bi-star star-item" data-value="3" onclick="setRating(3)"></i>
+    <i class="bi bi-star star-item" data-value="4" onclick="setRating(4)"></i>
+    <i class="bi bi-star star-item" data-value="5" onclick="setRating(5)"></i>
+</div>
+
+<!-- Hidden input to store the rating value -->
+<input type="hidden" name="rating" id="ratingInput" required>
+
+<!-- Show selected rating text -->
+<div id="ratingText" style="color: #8B6688; font-size: 12px; margin-top: 8px; letter-spacing: 1px;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row-two">
+                            <div class="form-group">
+                                <label class="form-label">Your Name *</label>
+                                <input type="text" class="form-input" name="name" placeholder="e.g., Ali Khan" required maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Your Email *</label>
+                                <input type="email" class="form-input" name="email" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Your Review *</label>
+                            <textarea class="form-input" name="comment" rows="5" placeholder="Share your experience with this product..." required maxlength="500"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-review-btn">
+                            <i class="bi bi-send me-2"></i>Submit Review
+                        </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <% if (relatedProducts.length > 0) { %>
+    <section class="related-section">
+        <div class="container">
+            <h3 class="mb-4" style="color: #2d0a1e; font-weight: 700;">Related Products</h3>
+            <div class="row">
+                <% relatedProducts.forEach(function(related) { %>
+                    <div class="col-6 col-md-3">
+                        <a href="/product/<%= related.slug %>" class="related-card">
+                            <% if (related.images && related.images.length > 0) { %>
+                                <img src="<%= related.images[0] %>" class="related-image" alt="<%= related.name %>">
+                            <% } else { %>
+                                <div class="related-image d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image" style="font-size: 30px; color: #ffb6c1;"></i>
+                                </div>
+                            <% } %>
+                            <div class="related-info">
+                                <div class="related-name"><%= related.name %></div>
+                                <span class="related-price">Rs. <%= (related.salePrice || related.price).toLocaleString() %></span>
+                            </div>
+                        </a>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+    <% } %>
+
+    <!-- Footer -->
+<%- include('partials/footer') %>
+
+    <!-- Sticky Add to Cart (Mobile) -->
+    <div class="sticky-add-cart">
+        <button class="btn" onclick="addToCart('<%= product._id %>', '<%= product.type %>')">
+            <i class="bi bi-cart-plus me-2"></i> Add to Cart - Rs. <%= (product.salePrice || product.price).toLocaleString() %>
+        </button>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-nav">
+        <a href="/"><i class="bi bi-house"></i> Home</a>
+        <a href="/category/men"><i class="bi bi-person"></i> Men</a>
+        <a href="/category/kids"><i class="bi bi-emoji-smile"></i> Kids</a>
+        <a href="/category/female"><i class="bi bi-heart"></i> Women</a>
+        <a href="/cart"><i class="bi bi-cart"></i> Cart</a>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/923277985292" class="whatsapp-btn" target="_blank">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/cart.js"></script>
+
+    <!-- Size Chart Modal -->
+<div id="sizeChartModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(63, 48, 64, 0.7); z-index: 9999; padding: 20px; overflow-y: auto;">
+    <div style="max-width: 700px; margin: 40px auto; background: white; border-top: 4px solid #C9A45C; padding: 40px; position: relative;">
+        
+        <!-- Close Button -->
+        <button onclick="closeSizeChart()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; color: #8B6688; cursor: pointer; padding: 5px 10px;">
+            <i class="bi bi-x"></i>
+        </button>
+        
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 35px;">
+            <h2 style="color: #3F3040; font-weight: 700; font-size: 24px; letter-spacing: 3px; text-transform: uppercase; margin: 0;">
+                <i class="bi bi-rulers" style="color: #C9A45C;"></i> Size Guide
+            </h2>
+            <p style="color: #8B6688; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px;">Find your perfect fit</p>
+        </div>
+                <!-- Women's Size Chart - Only show for Women's products -->
+        <% if (product.category === 'female') { %>
+        <div style="margin-bottom: 35px;">
+            <h4 style="color: #3F3040; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding-bottom: 10px; border-bottom: 2px solid #C9A45C; margin-bottom: 15px;">
+                Women's Shoes & Heels
+            </h4>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F8F3EF;">
+                        <th style="padding: 12px; text-align: left; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">EU Size</th>
+                        <th style="padding: 12px; text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">UK Size</th>
+                        <th style="padding: 12px; text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">US Size</th>
+                        <th style="padding: 12px; text-align: right; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">CM (Foot)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">36</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">3</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">5</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">22.5</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">37</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">4</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">6</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">23.5</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">38</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">5</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">7</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">24</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">39</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">6</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">8</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">25</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">40</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">7</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">9</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">25.5</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">41</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">8</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">10</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">26.5</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <% } %>
+
+        <!-- Men's Size Chart - Only show for Men's products -->
+        <% if (product.category === 'men') { %>
+        <div style="margin-bottom: 35px;">
+            <h4 style="color: #3F3040; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding-bottom: 10px; border-bottom: 2px solid #C9A45C; margin-bottom: 15px;">
+                Men's Shoes
+            </h4>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F8F3EF;">
+                        <th style="padding: 12px; text-align: left; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">EU Size</th>
+                        <th style="padding: 12px; text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">UK Size</th>
+                        <th style="padding: 12px; text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">US Size</th>
+                        <th style="padding: 12px; text-align: right; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">CM (Foot)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">40</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">6</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">7</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">25</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">41</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">7</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">8</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">25.5</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">42</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">8</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">9</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">26.5</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">43</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">9</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">10</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">27.5</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">44</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">10</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">11</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">28</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">45</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">11</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">12</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">29</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <% } %>
+
+        <!-- Kids Size Chart - Only show for Kids' products -->
+        <% if (product.category === 'kids') { %>
+        <div style="margin-bottom: 35px;">
+            <h4 style="color: #3F3040; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding-bottom: 10px; border-bottom: 2px solid #C9A45C; margin-bottom: 15px;">
+                Kids' Shoes
+            </h4>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #F8F3EF;">
+                        <th style="padding: 12px; text-align: left; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">Age Group</th>
+                        <th style="padding: 12px; text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">EU Size</th>
+                        <th style="padding: 12px; text-align: right; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #3F3040;">CM (Foot)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">Toddler (1-4 yrs)</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">20-26</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">12-15</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">Little Kids (4-8 yrs)</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">27-33</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">16-20</td></tr>
+                    <tr style="border-bottom: 1px solid #F8F3EF;"><td style="padding: 12px; color: #5a4a5c; font-size: 13px;">Big Kids (8-12 yrs)</td><td style="padding: 12px; text-align: center; color: #5a4a5c; font-size: 13px;">34-38</td><td style="padding: 12px; text-align: right; color: #5a4a5c; font-size: 13px;">21-24</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <% } %>
+        
+        
+        <!-- Tip -->
+        <div style="background: #F8F3EF; padding: 20px; border-left: 3px solid #C9A45C; margin-top: 30px;">
+            <p style="color: #5a4a5c; font-size: 13px; line-height: 1.7; margin: 0;">
+                <strong style="color: #3F3040;"><i class="bi bi-lightbulb"></i> Pro Tip:</strong>
+                Measure your foot at the end of the day when feet are slightly swollen. Stand on paper, mark your heel and longest toe, then measure the distance in cm.
+            </p>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Size Chart Script -->
+<script>
+    function openSizeChart() {
+        document.getElementById('sizeChartModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeSizeChart() {
+        document.getElementById('sizeChartModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Close on clicking outside the modal
+    document.getElementById('sizeChartModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSizeChart();
+        }
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeSizeChart();
+        }
+    });
+</script>
+<script>
+    // ============ STAR RATING PICKER ============
+    let selectedRating = 0;
+    
+    function setRating(value) {
+        selectedRating = value;
+        
+        // Update hidden input (this is what gets submitted)
+        document.getElementById('ratingInput').value = value;
+        
+        // Update star display
+        const stars = document.querySelectorAll('#starPicker .star-item');
+        stars.forEach(star => {
+            const starValue = parseInt(star.dataset.value);
+            if (starValue <= value) {
+                star.classList.remove('bi-star');
+                star.classList.add('bi-star-fill');
+            } else {
+                star.classList.remove('bi-star-fill');
+                star.classList.add('bi-star');
+            }
+        });
+        
+        // Update text below stars
+        const textMap = {
+            1: 'Poor',
+            2: 'Fair',
+            3: 'Good',
+            4: 'Very Good',
+            5: 'Excellent'
+        };
+        document.getElementById('ratingText').textContent = textMap[value] || '';
+    }
+    
+    // Hover effect — preview fill on hover
+    document.querySelectorAll('#starPicker .star-item').forEach(star => {
+        star.addEventListener('mouseenter', function() {
+            const hoverValue = parseInt(this.dataset.value);
+            const stars = document.querySelectorAll('#starPicker .star-item');
+            stars.forEach(s => {
+                const starValue = parseInt(s.dataset.value);
+                if (starValue <= hoverValue) {
+                    s.classList.remove('bi-star');
+                    s.classList.add('bi-star-fill');
+                } else {
+                    s.classList.remove('bi-star-fill');
+                    s.classList.add('bi-star');
+                }
+            });
+        });
+    });
+    
+    // Reset to selected on mouse leave
+    document.getElementById('starPicker').addEventListener('mouseleave', function() {
+        const stars = document.querySelectorAll('#starPicker .star-item');
+        stars.forEach(star => {
+            const starValue = parseInt(star.dataset.value);
+            if (starValue <= selectedRating) {
+                star.classList.remove('bi-star');
+                star.classList.add('bi-star-fill');
+            } else {
+                star.classList.remove('bi-star-fill');
+                star.classList.add('bi-star');
+            }
+        });
+    });
+</script>
+</body>
+</html>
