@@ -234,16 +234,23 @@
         link: "/category/female?sub=shoes-sandals",
         uniqueId: 'women-shoes'
     }) %>
-
-    <!-- Promo Banner -->
-    <% if (promoBanner && promoBanner.enabled) { %>
-    <div class="promo-banner">
-        <div class="container">
+<!-- Floating Promo Banner (Popup at top) -->
+<% if (promoBanner && promoBanner.enabled) { %>
+<div class="promo-popup" id="promoPopup">
+    <div class="promo-popup-content">
+        <button class="promo-popup-close" onclick="closePromo()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="promo-popup-text">
             <h3><%= promoBanner.title %></h3>
             <p><%= promoBanner.subtitle %></p>
         </div>
+        <div class="promo-popup-cta">
+            <a href="/category/female" class="promo-popup-btn">Shop Now</a>
+        </div>
     </div>
-    <% } %>
+</div>
+<% } %>
 
     <%- include('partials/subcat-section', { 
         title: "NEW ARRIVALS", 
@@ -320,5 +327,29 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/main.js"></script>
+
+    <script>
+    // ============ PROMO POPUP LOGIC ============
+    function closePromo() {
+        const popup = document.getElementById('promoPopup');
+        if (popup) {
+            popup.classList.add('hidden');
+            
+            // Remember for this browser session (hides for rest of session)
+            sessionStorage.setItem('promoDismissed', 'true');
+        }
+    }
+    
+    // Check if user already dismissed the promo this session
+    document.addEventListener('DOMContentLoaded', function() {
+        const popup = document.getElementById('promoPopup');
+        if (popup) {
+            const dismissed = sessionStorage.getItem('promoDismissed');
+            if (dismissed === 'true') {
+                popup.classList.add('hidden');
+            }
+        }
+    });
+</script>
 </body>
 </html>
