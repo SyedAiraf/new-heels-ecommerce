@@ -664,3 +664,202 @@ body {
         letter-spacing: 1px;
     }
 }
+/* ============ PREMIUM CART NOTIFICATION ============ */
+.cart-notification-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(63, 48, 64, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+}
+
+.cart-notification-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.cart-notification {
+    background: #F8F3EF;
+    border: 1px solid #C9A45C;
+    padding: 45px 40px 35px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    box-shadow: 
+        0 30px 80px rgba(63, 48, 64, 0.5),
+        0 0 0 1px rgba(201, 164, 92, 0.3);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-notification-overlay.show .cart-notification {
+    transform: scale(1) translateY(0);
+}
+
+/* Corner ornaments */
+.cart-notification::before,
+.cart-notification::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #C9A45C;
+}
+
+.cart-notification::before {
+    top: 10px;
+    left: 10px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.cart-notification::after {
+    bottom: 10px;
+    right: 10px;
+    border-left: none;
+    border-top: none;
+}
+
+.cart-notification-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: 1px solid rgba(139, 102, 136, 0.4);
+    color: #8B6688;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s;
+}
+
+.cart-notification-close:hover {
+    background: #8B6688;
+    color: #F8F3EF;
+    transform: rotate(90deg);
+}
+
+.cart-notification-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #8B6688 0%, #3F3040 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    color: #C9A45C;
+    font-size: 32px;
+    animation: checkPop 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.2s both;
+}
+
+@keyframes checkPop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.cart-notification-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #3F3040;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.cart-notification-subtitle {
+    font-size: 12px;
+    color: #8B6688;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.cart-notification-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cart-notification-btn {
+    padding: 12px 22px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid;
+    min-width: 130px;
+    justify-content: center;
+}
+
+.cart-notification-btn-outline {
+    background: transparent;
+    color: #8B6688;
+    border-color: #8B6688;
+}
+
+.cart-notification-btn-outline:hover {
+    background: #8B6688;
+    color: white;
+}
+
+.cart-notification-btn-solid {
+    background: #8B6688;
+    color: white;
+    border-color: #8B6688;
+}
+
+.cart-notification-btn-solid:hover {
+    background: #3F3040;
+    border-color: #3F3040;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(63, 48, 64, 0.2);
+}
+
+@media (max-width: 480px) {
+    .cart-notification {
+        padding: 35px 25px 25px;
+    }
+    .cart-notification-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+        margin-bottom: 18px;
+    }
+    .cart-notification-title {
+        font-size: 16px;
+    }
+    .cart-notification-subtitle {
+        font-size: 10px;
+        margin-bottom: 20px;
+    }
+    .cart-notification-actions {
+        flex-direction: column;
+    }
+    .cart-notification-btn {
+        width: 100%;
+    }
+}

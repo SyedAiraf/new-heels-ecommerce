@@ -740,40 +740,55 @@
     opacity: 0.9;
 }
 
-/* Mobile Responsive */
+/* ============ MOBILE OPTIMIZED ============ */
 @media (max-width: 768px) {
-    .promo-modal-overlay {
-        padding: 15px;
-    }
+    /* Hero Slider */
+    .hero-slider { height: 280px; }
+    .hero-content h1 { font-size: 20px; letter-spacing: 1px; margin-bottom: 8px; }
+    .hero-content p { font-size: 11px; margin-bottom: 15px; padding: 0 10px; }
+    .btn-shop { padding: 8px 22px; font-size: 9px; letter-spacing: 1.5px; }
+    .hero-arrow { width: 30px; height: 30px; font-size: 12px; }
+    .hero-arrow-left { left: 8px; }
+    .hero-arrow-right { right: 8px; }
+    .hero-dots { bottom: 12px; gap: 6px; }
+    .hero-dot { width: 7px; height: 7px; }
+    .hero-dot.active { width: 22px; }
     
-    .promo-modal {
-        padding: 40px 25px 30px;
-    }
+    /* Category Tiles */
+    .category-tiles { padding: 20px 0; }
+    .category-tile { height: 150px; margin-bottom: 10px; }
+    .category-tile h3 { font-size: 13px; letter-spacing: 2px; margin-bottom: 2px; }
+    .category-tile p { font-size: 9px; letter-spacing: 1px; }
+    .category-tile-overlay { padding: 15px 10px; }
     
-    .promo-modal-title {
-        font-size: 22px;
-        letter-spacing: 1px;
-    }
+    /* Subcategory Sections */
+    .subcat-section { padding: 20px 0; }
+    .subcat-header { margin-bottom: 15px; padding: 0 12px; }
+    .subcat-header h2 { font-size: 13px; letter-spacing: 1.5px; padding-left: 12px; }
+    .subcat-header h2::before { width: 3px; height: 18px; }
+    .subcat-header p { font-size: 9px; letter-spacing: 1px; margin-top: 2px; }
+    .subcat-view-all { font-size: 9px; letter-spacing: 1px; }
     
-    .promo-modal-subtitle {
-        font-size: 11px;
-    }
+    /* Product Cards Slider */
+    .product-card-slide { flex: 0 0 140px; max-width: 140px; }
+    .product-slide-image { height: 160px; }
+    .product-slide-info { padding: 10px 8px; }
+    .product-slide-name { font-size: 11px; margin-bottom: 4px; }
+    .product-slide-price { font-size: 13px; }
+    .product-slide-original { font-size: 10px; margin-left: 4px; }
+    .product-badge { font-size: 7px; padding: 3px 6px; letter-spacing: 1px; }
+    .discount-badge { font-size: 8px; padding: 3px 6px; }
+    .slider-nav-btn { width: 28px; height: 28px; font-size: 12px; }
     
-    .promo-modal-brand {
-        font-size: 13px;
-        letter-spacing: 4px;
-    }
+    /* Trust Badges */
+    .trust-badges { padding: 20px 0; }
+    .trust-badge { padding: 10px 8px; }
+    .trust-badge i { font-size: 22px; margin-bottom: 6px; }
+    .trust-badge h5 { font-size: 10px; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .trust-badge p { font-size: 9px; letter-spacing: 0.3px; }
     
-    .promo-modal-btn {
-        padding: 12px 35px;
-        font-size: 11px;
-        letter-spacing: 2px;
-    }
-    
-    .promo-modal-close {
-        width: 28px;
-        height: 28px;
-        top: 12px;
-        right: 12px;
-    }
+    /* Section Titles */
+    .section-title { margin-bottom: 15px; }
+    .section-title h2 { font-size: 14px; letter-spacing: 1.5px; }
+    .section-title p { font-size: 10px; }
 }
