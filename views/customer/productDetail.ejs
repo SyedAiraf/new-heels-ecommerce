@@ -469,8 +469,6 @@
         </div>
     </div>
 
-  
-
     <!-- WhatsApp Button -->
     <a href="https://wa.me/923277985292?text=Hello%20New%20Heels" class="whatsapp-btn" target="_blank">
         <i class="bi bi-whatsapp"></i>
@@ -491,12 +489,10 @@
         currentImageIndex = index;
         document.getElementById('mainImage').src = productImages[index];
         
-        // Update dots
         document.querySelectorAll('.image-dot').forEach((d, i) => {
             d.classList.toggle('active', i === index);
         });
         
-        // Update thumbnails
         document.querySelectorAll('.thumbnail').forEach((t, i) => {
             t.classList.toggle('active', i === index);
         });
@@ -533,14 +529,12 @@
     function toggleAccordion(element) {
         const wasActive = element.classList.contains('active');
         
-        // Close all
         document.querySelectorAll('.accordion-item').forEach(item => {
             item.classList.remove('active');
             const icon = item.querySelector('.accordion-icon');
             if (icon) icon.className = 'bi bi-plus accordion-icon';
         });
         
-        // Open clicked (if wasn't active)
         if (!wasActive) {
             element.classList.add('active');
             const icon = element.querySelector('.accordion-icon');
@@ -599,10 +593,8 @@
     document.getElementById('sizeChartModal').addEventListener('click', function(e) {
         if (e.target === this) closeSizeChart();
     });
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeSizeChart();
-    });
-    </script>
-</body>
-</html>
+
+    // ============ SCROLL ANIMATIONS ============
+    function initProductAnimations() {
+        const animatedElements = document.querySelectorAll(
+            '.main-image-wrapper, .thumbnail-images, .product-category, .product-title, .price-section, .stock-status, .size-chart-link, .size-selector, .quantity-wrapper, .btn-add-to-cart, .accordion-item, .
