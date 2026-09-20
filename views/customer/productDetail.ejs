@@ -594,7 +594,44 @@
         if (e.target === this) closeSizeChart();
     });
 
-    // ============ SCROLL ANIMATIONS ============
+        // ============ SCROLL ANIMATIONS ============
     function initProductAnimations() {
+        // Elements to animate on scroll
         const animatedElements = document.querySelectorAll(
-            '.main-image-wrapper, .thumbnail-images, .product-category, .product-title, .price-section, .stock-status, .size-chart-link, .size-selector, .quantity-wrapper, .btn-add-to-cart, .accordion-item, .
+            '.main-image-wrapper, .thumbnail-images, .product-category, .product-title, .price-section, .stock-status, .size-chart-link, .size-selector, .quantity-wrapper, .btn-add-to-cart, .accordion-item, .reviews-wrapper, .related-section h3, .related-card'
+        );
+        
+        if (animatedElements.length === 0) return;
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    // Staggered delay for siblings
+                    const siblings = Array.from(entry.target.parentElement.children);
+                    const index = siblings.indexOf(entry.target);
+                    const delay = Math.min(index * 80, 400);
+                    
+                    setTimeout(function() {
+                        entry.target.classList.add('animate-in');
+                    }, delay);
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        animatedElements.forEach(function(el) {
+            observer.observe(el);
+        });
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Small delay to let page settle
+        setTimeout(initProductAnimations, 100);
+    });
+    </script>
+</body>
