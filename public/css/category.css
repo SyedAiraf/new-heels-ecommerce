@@ -316,3 +316,123 @@
         transform: translateY(30px) scale(0.96);
     }
 }
+
+/* ============ 3D SCROLL ANIMATIONS FOR CATEGORY PAGE ============ */
+
+/* Page Header — fade in */
+.page-header {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.page-header.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Subcategory Tabs — fade in */
+.subcat-tabs {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.subcat-tabs.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Subcategory Tab — individual stagger */
+.subcat-tab {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.subcat-tab.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============ 3D PRODUCT CARDS — Waterfall Animation ============ */
+.product-card {
+    opacity: 0;
+    transform: perspective(1000px) 
+               translateY(60px) 
+               rotateX(-12deg) 
+               scale(0.92);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+    transform-origin: center top;
+    will-change: transform, opacity;
+}
+
+.product-card.animate-in {
+    opacity: 1;
+    transform: perspective(1000px) 
+               translateY(0) 
+               rotateX(0deg) 
+               scale(1);
+}
+
+/* Preserve hover effect after animation */
+.product-card.animate-in:hover {
+    transform: perspective(1000px) 
+               translateY(-8px) 
+               rotateX(2deg) 
+               scale(1.03);
+    box-shadow: 0 25px 50px rgba(63, 48, 64, 0.2);
+    border-color: #C9A45C;
+}
+
+/* Image subtle depth */
+.product-card .product-image {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-card.animate-in:hover .product-image {
+    transform: scale(1.08);
+}
+
+/* Empty State */
+.empty-state {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.empty-state.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============ MOBILE — Slightly less 3D for performance ============ */
+@media (max-width: 768px) {
+    .page-header {
+        transform: translateY(20px);
+    }
+    
+    .product-card {
+        transform: perspective(800px) 
+                   translateY(50px) 
+                   rotateX(-8deg) 
+                   scale(0.94);
+    }
+    
+    .product-card.animate-in {
+        transform: perspective(800px) 
+                   translateY(0) 
+                   rotateX(0deg) 
+                   scale(1);
+    }
+    
+    .product-card.animate-in:hover,
+    .product-card.animate-in:active {
+        transform: perspective(800px) 
+                   translateY(-4px) 
+                   rotateX(1deg) 
+                   scale(1.02);
+    }
+}
