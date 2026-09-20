@@ -241,3 +241,78 @@
         letter-spacing: 2px;
     }
 }
+
+
+/* ============ SCROLL ANIMATIONS ============ */
+
+/* Page Header */
+.page-header {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-header.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Subcategory Tabs */
+.subcat-tabs {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.subcat-tabs.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Product Cards — Staggered */
+.product-card {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+}
+
+.product-card.animate-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Preserve hover effect after reveal */
+.product-card.animate-in:hover {
+    transform: translateY(-6px) scale(1);
+    box-shadow: 0 18px 40px rgba(63, 48, 64, 0.15);
+    border-color: #C9A45C;
+}
+
+/* Empty State */
+.empty-state {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.empty-state.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============ MOBILE OPTIMIZED ============ */
+@media (max-width: 768px) {
+    .page-header {
+        transform: translateY(20px);
+    }
+    
+    .product-card {
+        transform: translateY(30px) scale(0.96);
+    }
+}
