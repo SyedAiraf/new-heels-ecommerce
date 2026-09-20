@@ -331,3 +331,210 @@
     .promo-modal-btn { padding: 12px 35px; font-size: 11px; letter-spacing: 2px; }
     .promo-modal-close { width: 28px; height: 28px; top: 12px; right: 12px; }
 }
+
+
+/* ============ MOBILE SPACING + PREMIUM LOOK ============ */
+
+@media (max-width: 768px) {
+    /* Hero se category tiles ke beech gap */
+    .category-tiles {
+        padding: 40px 0 50px;
+        margin-top: 0;
+        background: #F8F3EF;
+    }
+    
+    /* Subcategory sections spacing */
+    .subcat-section {
+        padding: 40px 0;
+        margin-bottom: 0;
+    }
+    
+    /* Category Tiles — Premium Mobile Look */
+    .category-tile {
+        height: 200px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        border: 1px solid #E8DFD5;
+        box-shadow: 0 8px 25px rgba(63, 48, 64, 0.15);
+        overflow: hidden;
+        /* Animation starting state */
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Animation when visible */
+    .category-tile.animate-in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    
+    /* Even stronger shadow to make it pop */
+    .category-tile.animate-in:hover,
+    .category-tile.animate-in:active {
+        box-shadow: 0 15px 40px rgba(63, 48, 64, 0.25);
+        border-color: #C9A45C;
+    }
+    
+    /* Image with slight scale for depth */
+    .category-tile-image {
+        transform: scale(1.05);
+        transition: transform 1s ease;
+    }
+    
+    .category-tile.animate-in .category-tile-image {
+        transform: scale(1);
+    }
+    
+    /* Bigger text for mobile premium look */
+    .category-tile h3 {
+        font-size: 18px;
+        letter-spacing: 6px;
+        margin-bottom: 6px;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
+    }
+    
+    .category-tile p {
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+    
+    .category-tile-overlay {
+        padding: 25px 15px;
+        background: linear-gradient(
+            to top,
+            rgba(45, 10, 30, 1) 0%,
+            rgba(63, 48, 64, 0.7) 40%,
+            rgba(63, 48, 64, 0.2) 75%,
+            transparent 100%
+        );
+    }
+    
+    /* Gold corner ornaments on mobile — always visible */
+    .category-tile::before {
+        width: 25px;
+        height: 25px;
+        top: 12px;
+        left: 12px;
+        opacity: 0.8;
+    }
+    
+    .category-tile::after {
+        width: 25px;
+        height: 25px;
+        bottom: 12px;
+        right: 12px;
+        opacity: 0.8;
+    }
+    
+    /* Product Cards — Premium Mobile Look with animation */
+    .product-card-slide {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        border-radius: 6px;
+        border: 1px solid #E8DFD5;
+        box-shadow: 0 4px 15px rgba(63, 48, 64, 0.08);
+        overflow: hidden;
+    }
+    
+    .product-card-slide.animate-in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    
+    /* Product slide images rounded top */
+    .product-slide-image-wrapper {
+        border-radius: 6px 6px 0 0;
+        overflow: hidden;
+    }
+    
+    /* Product image subtle scale on view */
+    .product-slide-image {
+        transform: scale(1.05);
+        transition: transform 0.8s ease;
+    }
+    
+    .product-card-slide.animate-in .product-slide-image {
+        transform: scale(1);
+    }
+    
+    /* Trust badges — more premium spacing */
+    .trust-badges {
+        padding: 40px 0;
+    }
+    
+    .trust-badge {
+        padding: 18px 12px;
+    }
+}
+
+/* ============ DESKTOP SCROLL ANIMATION ============ */
+@media (min-width: 769px) {
+    /* Category tiles fade in on scroll */
+    .category-tile {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .category-tile.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Override desktop hover animation */
+    .category-tile.animate-in:hover {
+        transform: translateY(-12px) scale(1.02);
+    }
+    
+    /* Product cards fade in on scroll */
+    .product-card-slide {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.4s ease,
+                    border-color 0.4s ease;
+    }
+    
+    .product-card-slide.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Preserve hover effect after animation */
+    .product-card-slide.animate-in:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 40px rgba(63, 48, 64, 0.15);
+        border-color: #C9A45C;
+    }
+    
+    /* Subcategory sections fade in */
+    .subcat-section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .subcat-section.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Trust badges fade in */
+    .trust-badge {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .trust-badge.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

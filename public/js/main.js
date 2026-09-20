@@ -97,24 +97,20 @@ function initProductSliders() {
         let autoSlideTimer;
         let userInteracting = false;
         
-        // Manual scroll function
         function scrollLeft() {
             slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
         }
         
         function scrollRight() {
-            // Check if we're at the end
             const atEnd = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10;
             
             if (atEnd) {
-                // Reset to start
                 slider.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
                 slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
         }
         
-        // Arrow button handlers
         if (leftBtn) {
             leftBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -131,7 +127,6 @@ function initProductSliders() {
             });
         }
         
-        // Auto-slide every 3 seconds
         function startAutoSlide() {
             autoSlideTimer = setInterval(() => {
                 if (!userInteracting) {
@@ -145,7 +140,6 @@ function initProductSliders() {
             startAutoSlide();
         }
         
-        // Pause on user interaction
         slider.addEventListener('mouseenter', () => {
             userInteracting = true;
         });
@@ -162,7 +156,6 @@ function initProductSliders() {
             setTimeout(() => { userInteracting = false; }, 3000);
         });
         
-        // Start auto-slide
         startAutoSlide();
     });
 }
@@ -179,11 +172,49 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// ============ INIT ============
+// ============ SCROLL ANIMATIONS (3D FADE IN) ============
+function initScrollAnimations() {
+    // Elements to animate on scroll
+    const animatedElements = document.querySelectorAll(
+        '.category-tile, .product-card-slide, .subcat-section, .trust-badge'
+    );
+    
+    if (animatedElements.length === 0) return;
+    
+    // IntersectionObserver — checks when element enters viewport
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                // Add delay for staggered effect
+                const index = Array.from(entry.target.parentElement.children).indexOf(entry.target);
+                const delay = Math.min(index * 100, 500); // Max 500ms delay
+                
+                setTimeout(function() {
+                    entry.target.classList.add('animate-in');
+                }, delay);
+                
+                // Stop observing once animated
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,      // Trigger when 15% of element is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before fully visible
+    });
+    
+    // Observe each element
+    animatedElements.forEach(function(el) {
+        observer.observe(el);
+    });
+}
+
+// ============ INIT ALL ============
 document.addEventListener('DOMContentLoaded', function() {
     initHeroSlider();
     initProductSliders();
+    initScrollAnimations();
     
+    // Newsletter alert
     const newsletterAlert = document.getElementById('newsletterAlert');
     if (newsletterAlert) {
         setTimeout(function() {
