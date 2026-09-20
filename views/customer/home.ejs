@@ -295,11 +295,11 @@
     <!-- Footer -->
     <%- include('partials/footer') %>
 
-    <!-- Premium Centered Promo Modal (Only ONE here, at the end) -->
+    <!-- Premium Promo Modal -->
     <% if (promoBanner && promoBanner.enabled) { %>
     <div class="promo-modal-overlay" id="promoModal">
         <div class="promo-modal">
-            <button class="promo-modal-close" onclick="closePromo()" aria-label="Close">
+            <button class="promo-modal-close" onclick="closePromo(event)" aria-label="Close">
                 <i class="bi bi-x-lg"></i>
             </button>
             
@@ -320,7 +320,7 @@
             
             <div class="promo-modal-divider"></div>
             
-            <a href="/" class="promo-modal-btn">
+            <a href="/" class="promo-modal-btn" onclick="closePromo(event)">
                 Shop Now
             </a>
             
@@ -355,32 +355,50 @@
     <script src="/js/main.js"></script>
 
     <script>
-    // ============ PROMO POPUP LOGIC ============
-    function closePromo() {
+    // ============ PROMO POPUP LOGIC — FIXED ============
+    
+    // Close promo — with optional event parameter
+    function closePromo(event) {
+        // If this is a click event on a link, prevent default navigation
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
+        
         const modal = document.getElementById('promoModal');
         if (modal) {
             modal.classList.add('hidden');
+            // Save BEFORE any navigation happens
             sessionStorage.setItem('promoDismissed', 'true');
         }
+        
+        // If it was a "Shop Now" click, navigate after saving
+        if (event && event.target && event.target.closest && event.target.closest('.promo-modal-btn')) {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 30);
+        }
     }
-
+    
+    // Check on page load
     document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('promoModal');
-        if (modal) {
-            const dismissed = sessionStorage.getItem('promoDismissed');
-            if (dismissed === 'true') {
-                modal.classList.add('hidden');
+        if (!modal) return;
+        
+        // Check if already dismissed in this session
+        const dismissed = sessionStorage.getItem('promoDismissed');
+        if (dismissed === 'true') {
+            modal.classList.add('hidden');
+            return;
+        }
+        
+        // Close on overlay click (outside modal)
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closePromo();
             }
-        }
+        });
         
-        if (modal) {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closePromo();
-                }
-            });
-        }
-        
+        // Close on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closePromo();
