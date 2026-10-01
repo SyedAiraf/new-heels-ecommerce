@@ -571,32 +571,48 @@
         });
     });
     
-    document.getElementById('starPicker').addEventListener('mouseleave', function() {
-        document.querySelectorAll('#starPicker .star-item').forEach(star => {
-            const sv = parseInt(star.dataset.value);
-            star.classList.toggle('bi-star-fill', sv <= selectedRating);
-            star.classList.toggle('bi-star', sv > selectedRating);
+    var starPickerEl = document.getElementById('starPicker');
+    if (starPickerEl) {
+        starPickerEl.addEventListener('mouseleave', function() {
+            document.querySelectorAll('#starPicker .star-item').forEach(star => {
+                const sv = parseInt(star.dataset.value);
+                star.classList.toggle('bi-star-fill', sv <= selectedRating);
+                star.classList.toggle('bi-star', sv > selectedRating);
+            });
         });
-    });
+    }
 
     // ============ SIZE CHART MODAL ============
-    function openSizeChart() {
-        document.getElementById('sizeChartModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeSizeChart() {
-        document.getElementById('sizeChartModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-    
-    document.getElementById('sizeChartModal').addEventListener('click', function(e) {
-        if (e.target === this) closeSizeChart();
-    });
+    window.openSizeChart = function() {
+        var modal = document.getElementById('sizeChartModal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    };
 
-        // ============ SCROLL ANIMATIONS ============
+    window.closeSizeChart = function() {
+        var modal = document.getElementById('sizeChartModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    };
+
+    (function() {
+        var modal = document.getElementById('sizeChartModal');
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+    })();
+
+    // ============ SCROLL ANIMATIONS ============
     function initProductAnimations() {
-        // Elements to animate on scroll
         const animatedElements = document.querySelectorAll(
             '.main-image-wrapper, .thumbnail-images, .product-category, .product-title, .price-section, .stock-status, .size-chart-link, .size-selector, .quantity-wrapper, .btn-add-to-cart, .accordion-item, .reviews-wrapper, .related-section h3, .related-card'
         );
@@ -606,7 +622,6 @@
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
-                    // Staggered delay for siblings
                     const siblings = Array.from(entry.target.parentElement.children);
                     const index = siblings.indexOf(entry.target);
                     const delay = Math.min(index * 80, 400);
@@ -628,10 +643,9 @@
         });
     }
     
-    // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        // Small delay to let page settle
         setTimeout(initProductAnimations, 100);
     });
     </script>
 </body>
+</html>

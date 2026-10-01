@@ -171,6 +171,24 @@
         </div>
     </div>
 
+       <!-- NEW ARRIVALS -->
+    <%- include('partials/subcat-section', { 
+        title: "NEW ARRIVALS", 
+        subtitle: "Fresh styles just landed", 
+        products: newArrivals, 
+        link: "/category/female",
+        uniqueId: 'new-arrivals'
+    }) %>
+
+    <!-- BEST SELLERS -->
+    <%- include('partials/subcat-section', { 
+        title: "BEST SELLERS", 
+        subtitle: "Most loved by customers", 
+        products: bestSellers, 
+        link: "/category/female",
+        uniqueId: 'best-sellers'
+    }) %>
+
     <!-- WOMEN'S FIRST -->
     <%- include('partials/subcat-section', { 
         title: "WOMEN'S BAGS & PURSES", 
@@ -238,23 +256,7 @@
         uniqueId: 'kids-big'
     }) %>
 
-    <!-- NEW ARRIVALS -->
-    <%- include('partials/subcat-section', { 
-        title: "NEW ARRIVALS", 
-        subtitle: "Fresh styles just landed", 
-        products: newArrivals, 
-        link: "/category/female",
-        uniqueId: 'new-arrivals'
-    }) %>
-
-    <!-- BEST SELLERS -->
-    <%- include('partials/subcat-section', { 
-        title: "BEST SELLERS", 
-        subtitle: "Most loved by customers", 
-        products: bestSellers, 
-        link: "/category/female",
-        uniqueId: 'best-sellers'
-    }) %>
+ 
 
     <!-- Trust Badges -->
     <div class="trust-badges">
